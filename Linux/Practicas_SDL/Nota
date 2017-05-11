@@ -1,0 +1,6 @@
+nota
+
+compilar g++ nombre.c -lSDL
+para compilar con la libreria image añadir -lSDL_image
+
+ejecutar	./a.out

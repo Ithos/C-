@@ -1,0 +1,2 @@
+banderas de compilación
+-lSDL -lSDL_image -lGL -lGLU -lassimp

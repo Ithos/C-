@@ -1,0 +1,5 @@
+1->normalanimation
+30->walking
++25->attack
++10->death
+65->total

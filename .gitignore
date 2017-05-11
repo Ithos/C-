@@ -29,9 +29,9 @@
 *.app
 
 # VisualStudio files
-.db
-.pdb
-.ilk
-.tlog
-.lastbuildstate
-.log
+*.pdb
+*.ilk
+*.tlog
+*.lastbuildstate
+*.log
+*.db

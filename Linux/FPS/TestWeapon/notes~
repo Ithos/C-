@@ -1,0 +1,9 @@
+1 normal
+15 fire_anim
+20 reload_anim
+
+pos: x->0.2  y->0  z->-1.20
+rot: x->0 y->3 z->0  
+
+aiming_pos: x->-0.14 y->0 z->-1.16
+aiming_rot: x->0 y->-5 z->0
