@@ -83,15 +83,15 @@ namespace Reader
 		~TTFReader();
 		std::size_t getReaderPosition();
 		std::size_t seekPosition(unsigned int newPos);
-		int read8ByteInt();
-		int read16ByteInt();
-		int read32ByteInt();
+		int8_t read8ByteInt();
+		int16_t read16ByteInt();
+		int32_t read32ByteInt();
 		unsigned int read8ByteUInt();
 		unsigned int read16ByteUInt();
 		unsigned int read24ByteUInt();
 		unsigned int read32ByteUInt();
-		unsigned short int readUFWORD();
-		short int readFWORD();
+		unsigned int readUFWORD();
+		int readFWORD();
 		float readF2DOT14();
 		float readFixed();
 		std::string readString(int lenght);
@@ -102,7 +102,6 @@ namespace Reader
 		int pPos;
 		std::streamsize pFileSize;
 		unsigned char getCharIncrementPos();
-		char getSignedCharIncrementPos();
 	};
 }
 

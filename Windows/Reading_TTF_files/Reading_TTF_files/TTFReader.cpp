@@ -56,27 +56,19 @@ namespace Reader
 		return retValue;
 	}
 
-	char TTFReader::getSignedCharIncrementPos()
+	int8_t TTFReader::read8ByteInt()
 	{
-		assert(pPos <= pFileSize, "Out of bounds file access.");
-		char retValue = pBuffer[pPos];
-		++pPos;
-		return retValue;
+		return read8ByteUInt();
 	}
 
-	int TTFReader::read8ByteInt()
+	int16_t TTFReader::read16ByteInt()
 	{
-		return getSignedCharIncrementPos();
+		return read16ByteUInt();
 	}
 
-	int TTFReader::read16ByteInt()
+	int32_t TTFReader::read32ByteInt()
 	{
-		return (getSignedCharIncrementPos() << 8) | getSignedCharIncrementPos();
-	}
-
-	int TTFReader::read32ByteInt()
-	{
-		return (getSignedCharIncrementPos() << 24) | (getSignedCharIncrementPos() << 16) | (getSignedCharIncrementPos() << 8) | getSignedCharIncrementPos();
+		return read32ByteUInt();
 	}
 
 	unsigned int TTFReader::read8ByteUInt()
@@ -99,12 +91,12 @@ namespace Reader
 		return (getCharIncrementPos() << 24) | (getCharIncrementPos() << 16) | (getCharIncrementPos() << 8) | getCharIncrementPos();
 	}
 
-	unsigned short int TTFReader::readUFWORD()
+	unsigned int TTFReader::readUFWORD()
 	{
 		return read16ByteUInt();
 	}
 
-	short int TTFReader::readFWORD()
+	int TTFReader::readFWORD()
 	{
 		return read16ByteInt();
 	}
