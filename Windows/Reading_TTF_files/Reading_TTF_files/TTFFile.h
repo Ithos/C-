@@ -41,8 +41,8 @@ namespace Reader
 	struct Point
 	{
 		unsigned int onCurve;
-		unsigned int x;
-		unsigned int y;
+		int x;
+		int y;
 
 
 		Point& operator = (Point& other)

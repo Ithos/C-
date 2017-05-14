@@ -18,15 +18,15 @@ void GUI::GlyphDrawer::paintEvent(QPaintEvent * e)
 {
 	QPainter painter(this);
 
-	int i = 0;
+	//int i = 2;
 
-	//for (int i = 0; i < file->GetLength(); ++i)
+	for (int i = 0; i < file->GetLength(); ++i)
 	{
 		Reader::Glyph* glyph = file->GetGlyphs()[i];
 
 		if (glyph == nullptr || glyph->Type != "simple")
 		{
-			//continue;
+			continue;
 		}
 
 		int currentPoint = 0, finalPoints = 0;
@@ -41,10 +41,10 @@ void GUI::GlyphDrawer::paintEvent(QPaintEvent * e)
 
 			if (currentPoint == 0)
 			{
-				overheadX = iX + (i > 0 ? file->GetGlyphs()[i - 1]->GetWidth() : 0);
-				overheadY = (i > 0 ? file->GetGlyphs()[i - 1]->GetHeight() : 0);
+				overheadX = iX + (i > 0 ? file->GetGlyphs()[i - 1]->XMax : 0);
+				overheadY = (i > 0 ? file->GetGlyphs()[i - 1]->YMax : 0);
 
-				iX += glyph->GetWidth() + 10;
+				iX += (glyph->XMax + 10000);
 			}
 
 			if (first)
@@ -54,7 +54,7 @@ void GUI::GlyphDrawer::paintEvent(QPaintEvent * e)
 			}
 			else
 			{
-				painter.drawLine(currentX/10, currentY/10, point->x/10, point->y/10);
+				painter.drawLine(currentX/100, currentY/100, point->x/100, point->y/100);
 			}
 
 			if (currentPoint == glyph->ContourEnds[finalPoints])

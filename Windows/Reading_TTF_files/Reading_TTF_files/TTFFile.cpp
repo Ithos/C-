@@ -185,7 +185,8 @@ Reader::Glyph & Reader::TTFFile::readSimpleGlyph(HeadTableData & headTable, Glyp
 	}
 
 	// skip over intructions
-	pBinaryReader->seekPosition(pBinaryReader->read16ByteUInt() + pBinaryReader->getReaderPosition());
+	unsigned int newPos = pBinaryReader->read16ByteUInt() + pBinaryReader->getReaderPosition();
+	pBinaryReader->seekPosition(newPos);
 
 	if (returnGlyph.ContourEnds.size() == 0)
 	{
@@ -315,10 +316,16 @@ void Reader::TTFFile::readCoords(char coord, char byteFlag, char deltaFlag, int 
 			value += pBinaryReader->read16ByteInt();
 		}
 
-		if(coord == 'x')
+		if (coord == 'x')
+		{
+			assert(value >= glyph.XMin && value <= glyph.XMax, "x value outside range");
 			glyph.Points[i]->x = value;
+		}
 		else
+		{ 
+			assert(value >= glyph.YMin && value <= glyph.YMax, "y value outside range");
 			glyph.Points[i]->y = value;
+		}
 	}
 
 }
