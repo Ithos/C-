@@ -18,7 +18,8 @@ void GUI::GlyphDrawer::paintEvent(QPaintEvent * e)
 {
 	QPainter painter(this);
 
-	//int i = 2;
+	int iX = 0, iY = 0;
+
 
 	for (int i = 0; i < file->GetLength(); ++i)
 	{
@@ -31,9 +32,9 @@ void GUI::GlyphDrawer::paintEvent(QPaintEvent * e)
 
 		int currentPoint = 0, finalPoints = 0;
 
-		int iX = 0, currentX = 0, currentY = 0, overheadX = 0, overheadY = 0;
+		int currentX = 0, currentY = 0, overheadX = 0, overheadY = 0;
 
-		bool first = true;
+		bool contourStart = true;
 
 		while (currentPoint < glyph->Points.size())
 		{
@@ -42,25 +43,30 @@ void GUI::GlyphDrawer::paintEvent(QPaintEvent * e)
 			if (currentPoint == 0)
 			{
 				overheadX = iX + (i > 0 ? file->GetGlyphs()[i - 1]->XMax : 0);
-				overheadY = (i > 0 ? file->GetGlyphs()[i - 1]->YMax : 0);
+				overheadY = iY + (i > 0 ? file->GetGlyphs()[i - 1]->YMax : 0);
 
-				iX += (glyph->XMax + 10000);
+				iX += (glyph->XMax * 2);
+
+				if (iX > 100000)
+				{
+					iX = 0;
+					iY += 5000;
+				}
 			}
 
-			if (first)
+			if (contourStart)
 			{
-				
-				first = false;
+				contourStart = false;
 			}
 			else
 			{
-				painter.drawLine(currentX/100, currentY/100, point->x/100, point->y/100);
+				painter.drawLine(currentX/100, currentY/100, (overheadX + point->x)/100, (overheadY + point->y)/100);
 			}
 
 			if (currentPoint == glyph->ContourEnds[finalPoints])
 			{
 				++finalPoints;
-				first = true;
+				contourStart = true;
 			}
 
 			currentX = point->x + overheadX;
