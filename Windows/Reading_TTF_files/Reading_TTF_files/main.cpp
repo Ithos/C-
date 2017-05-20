@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 
 	printf("The current working directory is %s", cCurrentPath);
 
-	GUI::GlyphDrawer window("Resources/ITCBLKAD.TTF");//../../Reading_TTF_files/
+	GUI::GlyphDrawer window("Resources/consolaz.ttf");//../../Reading_TTF_files/ITCBLKAD.TTF
 
 	window.show();
 

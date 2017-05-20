@@ -7,6 +7,7 @@ GlyphDrawer::GlyphDrawer(std::string filename, QWidget *parent) :
 	QMainWindow(parent), file(nullptr)
 {
 	file = new Reader::TTFFile(filename.c_str());
+	showMaximized();
 }
 
 GlyphDrawer::~GlyphDrawer()
@@ -19,6 +20,8 @@ void GUI::GlyphDrawer::paintEvent(QPaintEvent * e)
 	QPainter painter(this);
 
 	int iX = 0, iY = 0;
+	int firstX = 0, firstY = 0;
+	Reader::Glyph* lastSimpleGlyph = nullptr;
 
 
 	for (int i = 0; i < file->GetLength(); ++i)
@@ -29,6 +32,8 @@ void GUI::GlyphDrawer::paintEvent(QPaintEvent * e)
 		{
 			continue;
 		}
+
+		float xRatio = (32.0/ glyph->GetWidth()), yRatio = (32.0/glyph->GetHeight());
 
 		int currentPoint = 0, finalPoints = 0;
 
@@ -42,39 +47,49 @@ void GUI::GlyphDrawer::paintEvent(QPaintEvent * e)
 
 			if (currentPoint == 0)
 			{
-				overheadX = iX + (i > 0 ? file->GetGlyphs()[i - 1]->XMax : 0);
-				overheadY = iY + (i > 0 ? file->GetGlyphs()[i - 1]->YMax : 0);
+				iX += ( (i > 0 ? lastSimpleGlyph->GetWidth() * 2 * xRatio : 0));
 
-				iX += (glyph->XMax * 2);
-
-				if (iX > 100000)
+				if (iX > this->width())
 				{
 					iX = 0;
-					iY += 5000;
+					iY -= 100 ;
 				}
+
+				overheadX = iX ;
+				overheadY = iY - 20;
+
+				
+
+				
 			}
 
 			if (contourStart)
 			{
 				contourStart = false;
+				firstX = point->x * xRatio + overheadX;
+				firstY = point->y * yRatio + overheadY;
+
 			}
 			else
 			{
-				painter.drawLine(currentX/100, currentY/100, (overheadX + point->x)/100, (overheadY + point->y)/100);
+				painter.drawLine(currentX, (glyph->GetHeight()* yRatio - currentY), (overheadX + point->x * xRatio) , (glyph->GetHeight()* yRatio - overheadY - point->y * yRatio) );
 			}
 
 			if (currentPoint == glyph->ContourEnds[finalPoints])
 			{
 				++finalPoints;
 				contourStart = true;
+				painter.drawLine(point->x * xRatio + overheadX, glyph->GetHeight()* yRatio - (point->y * yRatio + overheadY) , firstX , (glyph->GetHeight()* yRatio - firstY) );
 			}
 
-			currentX = point->x + overheadX;
-			currentY = point->y + overheadY;
+			currentX = point->x * xRatio + overheadX;
+			currentY = point->y * yRatio + overheadY;
 
 			++currentPoint;
 
 		}
+
+		lastSimpleGlyph = glyph;
 	}
 
 }

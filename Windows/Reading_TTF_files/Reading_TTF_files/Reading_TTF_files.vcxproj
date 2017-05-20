@@ -94,6 +94,10 @@
     <ClInclude Include="TTFReader.h" />
   </ItemGroup>
   <ItemGroup>
+    <Font Include="Resources\consola.ttf" />
+    <Font Include="Resources\consolab.ttf" />
+    <Font Include="Resources\consolai.ttf" />
+    <Font Include="Resources\consolaz.ttf" />
     <Font Include="Resources\ITCBLKAD.TTF" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
