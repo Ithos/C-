@@ -244,9 +244,10 @@ Reader::Glyph & Reader::TTFFile::readCompoundGlyph(HeadTableData & headTable, Gl
 
 		flags = pBinaryReader->read16ByteUInt();
 		unsigned int glyphIndex = pBinaryReader->read16ByteUInt();
-		int arr[] = { 1,0,0,1,0,0 };
+		float arr[] = { 1,0,0,1,0,0 };
 
 		Component* cmp = new Component(flags, arr);
+		cmp->index = glyphIndex;
 
 		if (flags & (unsigned int)GlyphConstants::ARG_1_AND_2_ARE_WORDS)
 		{

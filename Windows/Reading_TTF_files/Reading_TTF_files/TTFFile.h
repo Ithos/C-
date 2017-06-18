@@ -67,10 +67,10 @@ namespace Reader
 
 	struct Component
 	{
-		unsigned int index;
-		int matrix[6];
-		int DestinationPointIndex;
-		int SourcePointIndex;
+		unsigned int index; // Index of the source glyph
+		float matrix[6]; // Transformations to apply to the source glyph
+		int DestinationPointIndex; // Destination coordinates
+		int SourcePointIndex; //
 
 		Component& operator =(Component& other)
 		{
@@ -80,7 +80,7 @@ namespace Reader
 				DestinationPointIndex = other.DestinationPointIndex;
 				SourcePointIndex = other.SourcePointIndex;
 
-				matrix[0] = other.matrix[0];
+				matrix[0] = other.matrix[0]; 
 				matrix[1] = other.matrix[1];
 				matrix[2] = other.matrix[2];
 				matrix[3] = other.matrix[3];
@@ -91,17 +91,21 @@ namespace Reader
 			return *this;
 		}
 
-		Component(unsigned int id, int* arr)
+		Component(unsigned int id, float* arr)
 		{
 			index = id;
 			if ((sizeof(arr) / sizeof(arr[0])) >= 6)
 			{
-				matrix[0] = arr[0];
-				matrix[1] = arr[1];
-				matrix[2] = arr[2];
-				matrix[3] = arr[3];
-				matrix[4] = arr[4];
-				matrix[5] = arr[5];
+				matrix[0] = arr[0]; // x offset
+				matrix[1] = arr[1]; // y offset
+				matrix[2] = arr[2]; // x scale
+				matrix[3] = arr[3]; // scale01
+				matrix[4] = arr[4]; // scale10
+				matrix[5] = arr[5]; // y scale
+
+				/// NOTE -- FORMULAS -- 
+				/// horizontalScale = sqrt(XScale*XScale + Scale01*Scale01)
+				/// verticalScale   = sqrt(YScale*YScale + Scale10*Scale10)
 			}
 			else {
 				matrix[0] = 1;
