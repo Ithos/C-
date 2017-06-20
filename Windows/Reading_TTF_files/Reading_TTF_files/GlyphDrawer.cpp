@@ -3,8 +3,8 @@
 
 using namespace GUI;
 
-const float GlyphDrawer::pWidth = 32.0f;
-const float GlyphDrawer::pHeight = 32.0f;
+const float GlyphDrawer::pWidth = 48.0;// 32.0f;
+const float GlyphDrawer::pHeight = 48.0;//32.0f;
 
 GlyphDrawer::GlyphDrawer(std::string filename, QWidget *parent) :
 	QMainWindow(parent), file(nullptr)
@@ -76,10 +76,13 @@ int GUI::GlyphDrawer::drawGlyph(QPainter& painter, float width, float height, Re
 }
 
 int GUI::GlyphDrawer::drawCompoundGlyph(QPainter & painter, float width, float height, const std::vector<Reader::Glyph*>& glyhpList, Reader::Glyph* glyph, Reader::Glyph *& lastGlyph, 
-	int overheadX, int overheadY)
+	int overheadX, int overheadY, Reader::Glyph* acumulationGlyph)
 {
 
 	int xCoordDisplacement = 0;
+
+	Reader::Glyph* compoundGlyph = acumulationGlyph == nullptr ? new Reader::Glyph() : acumulationGlyph;
+	if(acumulationGlyph == nullptr) compoundGlyph->Type = "simple";
 
 	for (auto iter = glyph->Components.begin(); iter != glyph->Components.end(); ++iter)
 	{
@@ -93,15 +96,57 @@ int GUI::GlyphDrawer::drawCompoundGlyph(QPainter & painter, float width, float h
 
 		if (subglyph->Type == "compound")
 		{
-			xCoordDisplacement = drawCompoundGlyph(painter, width, height, glyhpList, glyph, lastGlyph, overheadX, overheadY);
+			xCoordDisplacement = drawCompoundGlyph(painter, width, height, glyhpList, glyph, lastGlyph, overheadX, overheadY, acumulationGlyph);
 		}
 		else
 		{
-			xCoordDisplacement = drawGlyph(painter, width, height, subglyph, lastGlyph, overheadX, overheadY, comp->matrix[4], comp->matrix[5], horizontalScale, verticalScale);
+
+			int compoundCurrentPoints = compoundGlyph->Points.size();
+
+			short width = subglyph->GetWidth(), height = subglyph->GetHeight();
+
+			if (compoundCurrentPoints > 0)
+			{
+				compoundGlyph->ContourEnds.push_back(compoundCurrentPoints);
+			}
+
+			for (auto iter = subglyph->ContourEnds.begin(); iter != subglyph->ContourEnds.end(); ++iter)
+			{
+				compoundGlyph->ContourEnds.push_back((*iter) + compoundCurrentPoints);
+			}
+
+			for (auto iter = subglyph->Points.begin(); iter != subglyph->Points.end(); ++iter)
+			{
+
+				Reader::Point point((*iter)->onCurve);
+				 
+				point.x = (*iter)->x * comp->matrix[0] + (*iter)->y * comp->matrix[1] + width * horizontalScale;
+				point.y = (*iter)->y * comp->matrix[3] + (*iter)->x * comp->matrix[2] + height * verticalScale;
+
+				compoundGlyph->Points.push_back( (*iter));
+			}
+
+
+			compoundGlyph->NumberOfContours += subglyph->NumberOfContours;
+
+			int modXMax = subglyph->XMax * comp->matrix[0] + subglyph->YMax * comp->matrix[1] + width * horizontalScale, 
+				modXMin = subglyph->XMin * comp->matrix[0] + subglyph->YMin * comp->matrix[1] + width * horizontalScale, 
+				modYmax = subglyph->YMax * comp->matrix[3] + subglyph->XMax * comp->matrix[2] + height * verticalScale,
+				modYMin = subglyph->YMin * comp->matrix[3] + subglyph->YMin * comp->matrix[2] + height * verticalScale; 
+
+			if (compoundGlyph->XMax < modXMax) compoundGlyph->XMax = modXMax;
+			if (compoundGlyph->YMax < modYmax) compoundGlyph->YMax = modYmax;
+
+			if (compoundGlyph->XMin > modXMin) compoundGlyph->XMin = modXMin;
+			if (compoundGlyph->YMin > modYMin) compoundGlyph->YMin = modYMin;
+
+
 		}
 
 	}
 
+
+	xCoordDisplacement = drawGlyph(painter, width, height, compoundGlyph, lastGlyph, overheadX, overheadY);
 
 	return xCoordDisplacement;
 }
@@ -146,66 +191,6 @@ void GUI::GlyphDrawer::paintEvent(QPaintEvent * e)
 
 		overheadX = iX;
 		overheadY = iY;
-
-		
-
-		/*float xRatio = (8.0/ glyph->GetWidth()), yRatio = (8.0/glyph->GetHeight());
-
-		int currentPoint = 0, finalPoints = 0;
-
-		int currentX = 0, currentY = 0, overheadX = 0, overheadY = 0;
-
-		bool contourStart = true;
-
-		while (currentPoint < glyph->Points.size())
-		{
-			Reader::Point* point = glyph->Points[currentPoint];
-
-			if (currentPoint == 0)
-			{
-				iX += ( (i > 0 ? lastSimpleGlyph->GetWidth() * 2 * xRatio : 0));
-
-				if (iX > this->width())
-				{
-					iX = 0;
-					iY -= 20 ;
-				}
-
-				overheadX = iX ;
-				overheadY = iY - 20;
-
-				
-
-				
-			}
-
-			if (contourStart)
-			{
-				contourStart = false;
-				firstX = point->x * xRatio + overheadX;
-				firstY = point->y * yRatio + overheadY;
-
-			}
-			else
-			{
-				painter.drawLine(currentX, (glyph->GetHeight()* yRatio - currentY), (overheadX + point->x * xRatio) , (glyph->GetHeight()* yRatio - overheadY - point->y * yRatio) );
-			}
-
-			if (currentPoint == glyph->ContourEnds[finalPoints])
-			{
-				++finalPoints;
-				contourStart = true;
-				painter.drawLine(point->x * xRatio + overheadX, glyph->GetHeight()* yRatio - (point->y * yRatio + overheadY) , firstX , (glyph->GetHeight()* yRatio - firstY) );
-			}
-
-			currentX = point->x * xRatio + overheadX;
-			currentY = point->y * yRatio + overheadY;
-
-			++currentPoint;
-
-		}
-
-		lastSimpleGlyph = glyph;*/
 	}
 
 }
