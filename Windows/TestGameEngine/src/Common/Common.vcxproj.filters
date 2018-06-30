@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Configuration">
+      <UniqueIdentifier>{d2f4aafe-2015-4cf4-a833-3c4b2f2d7d66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderFiles">
+      <UniqueIdentifier>{b0949215-5459-46d4-9e25-41fbe9d29670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration\Source Files">
+      <UniqueIdentifier>{09a8c5fa-d3b9-4cd4-8c52-7a8d0f6f9c35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration\Header Files">
+      <UniqueIdentifier>{dc0d37eb-73d1-4f78-93f6-50b080039161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderFiles\Header Files">
+      <UniqueIdentifier>{ca83052c-4454-43ef-b0a7-cc34dfb79f63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderFiles\Source Files">
+      <UniqueIdentifier>{327fda4a-b1a4-4a8b-bb24-f808f3fb4dcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StringFunctions">
+      <UniqueIdentifier>{3bfd1cc0-9cc9-483c-a325-83d647976f5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StringFunctions\Header Files">
+      <UniqueIdentifier>{63e15d84-8c04-41c7-a75c-f2562370aa96}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Configuration\ConfigurationManager.h">
+      <Filter>Configuration\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderFiles\Shader.h">
+      <Filter>ShaderFiles\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderFiles\ShaderManager.h">
+      <Filter>ShaderFiles\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StringFunctions\StringFunctions.h">
+      <Filter>StringFunctions\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Configuration\ConfigurationManager.cpp">
+      <Filter>Configuration\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderFiles\Shader.cpp">
+      <Filter>ShaderFiles\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderFiles\ShaderManager.cpp">
+      <Filter>ShaderFiles\Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

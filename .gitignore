@@ -35,3 +35,5 @@
 *.lastbuildstate
 *.log
 *.db
+*.user
+*.suo
