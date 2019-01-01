@@ -37,3 +37,8 @@
 *.db
 *.user
 *.suo
+*.idb
+*.cache
+
+# Qt Generated files
+moc_*
