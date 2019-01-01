@@ -91,9 +91,24 @@ void GeometryEngine::WorldItem::Move(const QVector3D & vector, bool updateChildr
 
 void GeometryEngine::WorldItem::Rotate(const QVector3D & rot, bool updateChildren)
 {
-	mRotation += rot;
+	QQuaternion tmpQuat ;
+	tmpQuat = tmpQuat.fromEulerAngles(rot.x(), rot.y(), rot.z());
+	mRotation *= tmpQuat;
 
 	UpdateModelMatrix();
+
+	if (updateChildren)
+	{
+		for (auto iter = mpChildren.begin(); iter != mpChildren.end(); ++iter)
+		{
+			(*iter)->Rotate(rot);
+		}
+	}
+}
+
+void GeometryEngine::WorldItem::Rotate(const QQuaternion & rot, bool updateChildren)
+{
+	mRotation *= rot;
 
 	if (updateChildren)
 	{
@@ -131,11 +146,19 @@ void GeometryEngine::WorldItem::SetPosition(const QVector3D & pos, bool delayUpd
 	}
 }
 
+void GeometryEngine::WorldItem::SetRotation(const QQuaternion & rot, bool delayUpdate)
+{
+	mRotation.setScalar(rot.scalar());
+	mRotation.setVector(rot.vector());
+	if (!delayUpdate)
+	{
+		CalculateModelMatrix();
+	}
+}
+
 void GeometryEngine::WorldItem::SetRotation(const QVector3D & rot, bool delayUpdate)
 {
-	mRotation.setX(rot.x());
-	mRotation.setY(rot.y());
-	mRotation.setZ(rot.z());
+	mRotation = mRotation.fromEulerAngles(rot);
 
 	if (!delayUpdate)
 	{
@@ -170,7 +193,6 @@ void GeometryEngine::WorldItem::init(const QVector3D & pos, const QVector3D & ro
 
 void GeometryEngine::WorldItem::CalculateModelMatrix(bool calculateChildren)
 {
-	mModelMatrix.setToIdentity();
 	UpdateModelMatrix();
 
 	if (calculateChildren)
@@ -184,10 +206,9 @@ void GeometryEngine::WorldItem::CalculateModelMatrix(bool calculateChildren)
 
 void GeometryEngine::WorldItem::UpdateModelMatrix(bool updateChildren)
 {
+	mModelMatrix.setToIdentity();
 	mModelMatrix.translate(GetPosition());
-	mModelMatrix.rotate(QQuaternion(mRotation.x(), QVector3D(1.0f, 0.0f, 0.0f)));
-	mModelMatrix.rotate(QQuaternion(mRotation.y(), QVector3D(0.0f, 1.0f, 0.0f)));
-	mModelMatrix.rotate(QQuaternion(mRotation.z(), QVector3D(0.0f, 0.0f, 1.0f)));
+	mModelMatrix.rotate(mRotation);
 	mModelMatrix.scale(mScale);
 
 	if (updateChildren)
@@ -197,4 +218,14 @@ void GeometryEngine::WorldItem::UpdateModelMatrix(bool updateChildren)
 			(*iter)->UpdateModelMatrix(updateChildren);
 		}
 	}
+}
+
+QVector3D GeometryEngine::WorldItem::ToModelCoordSystem(const QVector3D & vector)
+{
+	return mRotation.inverted() * vector;
+}
+
+QVector3D GeometryEngine::WorldItem::ToGlobalCoordSystem(const QVector3D & vector)
+{
+	return mRotation * vector;
 }

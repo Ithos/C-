@@ -27,22 +27,26 @@ namespace GeometryEngine
 		bool FindChild(WorldItem* child) const;
 		WorldItem* GetParent() const { return mpParent; }
 		const QVector3D& GetPosition() const;
-		const QVector3D& GetRotation() const { return mRotation; }
+		const QQuaternion& GetRotation() const { return mRotation; }
 		const QVector3D& GetScale() const { return mScale; }
 		void Move(const QVector3D& vector, bool updateChildren = true);
 		void Rotate(const QVector3D& rot, bool updateChildren = true);
+		void Rotate(const QQuaternion& rot, bool updateChildren = true);
 		void Scale(const QVector3D& scale, bool updateChildren = true);
 		void SetPosition(const QVector3D& vector, bool delayUpdate = false);
+		void SetRotation(const QQuaternion& rot, bool delayUpdate = false);
 		void SetRotation(const QVector3D& rot, bool delayUpdate = false);
 		void SetScale(const QVector3D& scale, bool delayUpdate = false);
 		virtual void CalculateModelMatrix(bool calculateChildren = false);
 		virtual void UpdateModelMatrix(bool updateChildren = false);
 		virtual void Update(const QMatrix4x4& projectionMatrix) {};
+		virtual QVector3D ToModelCoordSystem(const QVector3D& vector);
+		virtual QVector3D ToGlobalCoordSystem(const QVector3D& vector );
 
 	protected:
 
 		QVector3D mPosition;
-		QVector3D mRotation;
+		QQuaternion mRotation;
 		QVector3D mScale;
 		std::unordered_set< WorldItem* > mpChildren;
 		WorldItem* mpParent; // DONT DELETE

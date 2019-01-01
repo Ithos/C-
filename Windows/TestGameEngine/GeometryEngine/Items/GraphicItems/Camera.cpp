@@ -14,10 +14,9 @@ GeometryEngine::Camera::~Camera()
 void GeometryEngine::Camera::UpdateModelMatrix(bool updateChildren)
 {
 	// The transformations on the camera are really the opposite transformations on the world
+	mModelMatrix.setToIdentity();
 	mModelMatrix.translate(-GetPosition());
-	mModelMatrix.rotate(QQuaternion(-mRotation.x(), QVector3D(1.0f, 0.0f, 0.0f)));
-	mModelMatrix.rotate(QQuaternion(-mRotation.y(), QVector3D(0.0f, 1.0f, 0.0f)));
-	mModelMatrix.rotate(QQuaternion(-mRotation.z(), QVector3D(0.0f, 0.0f, 1.0f)));
+	mModelMatrix.rotate(-mRotation);
 	mModelMatrix.scale(mScale);
 
 	if (updateChildren)

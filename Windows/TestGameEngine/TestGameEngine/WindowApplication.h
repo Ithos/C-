@@ -20,6 +20,8 @@
 
 namespace GeometryEngine {
 	class GeometryEngine;
+	class Cube;
+	class PerspectiveCamera;
 }
 
 namespace Application
@@ -49,6 +51,11 @@ namespace Application
 		QBasicTimer timer;
 		GeometryEngine::GeometryEngine *mpGeomInstance;
 		QVector2D mWindowSize;
+
+		/// Items shouldnt be created here its just for testing purposes
+		GeometryEngine::Cube* testCube;
+		GeometryEngine::Cube* testCube2;
+		GeometryEngine::PerspectiveCamera* cam;
 
 	};
 }

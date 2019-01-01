@@ -39,6 +39,7 @@
 *.suo
 *.idb
 *.cache
+*.VC*
 
 # Qt Generated files
 moc_*

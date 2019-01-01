@@ -77,6 +77,12 @@ namespace Application
 		// Draw cube geometry
 		GeometryEngine::GeometryScene * scene = mpGeomInstance->GetSceneManager()->GetActiveScene();
 
+		QVector3D rotation = QVector3D(0.0f, 0.0f, 1.0f);
+
+		testCube->Rotate(testCube->ToModelCoordSystem(rotation));
+		testCube2->Rotate(testCube2->ToModelCoordSystem(rotation));
+		cam->Rotate(rotation);
+
 		if (scene != nullptr)
 		{
 			scene->Draw();
@@ -85,15 +91,15 @@ namespace Application
 	void CWindowApplication::initGeometry(GeometryEngine::GeometryEngine* engine)
 	{
 		GeometryEngine::GeometryScene* scene = engine->GetSceneManager()->CreateScene();
-		GeometryEngine::Cube* testCube = new GeometryEngine::Cube(QVector3D(-5.0f, 0.0f, -15.0f), QVector3D(0.3f, -0.3f, 0.0f));
-		GeometryEngine::Cube* testCube2 = new GeometryEngine::Cube(QVector3D(5.0f, 0.0f, -15.0f), QVector3D(-0.3f, 0.3f, 0.0f));
-		GeometryEngine::PerspectiveCamera* cam = new GeometryEngine::PerspectiveCamera(QVector4D(0, 0, this->width(), this->height()), 45.0f, 1.0f, true, 0.1f, 30.0f, 
+		/*GeometryEngine::Cube**/ testCube = new GeometryEngine::Cube(QVector3D(-5.0f, 0.0f, -15.0f), QVector3D(30.0f, -30.0f, 0.0f));
+		/*GeometryEngine::Cube**/ testCube2 = new GeometryEngine::Cube(QVector3D(5.0f, 0.0f, -15.0f), QVector3D(-30.0f, 30.0f, 0.0f));
+		/*GeometryEngine::PerspectiveCamera**/ cam = new GeometryEngine::PerspectiveCamera(QVector4D(0, 0, this->width(), this->height()), 45.0f, 1.0f, true, 0.1f, 30.0f, 
 																			QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f, 0.0f, 0.0f));
-		GeometryEngine::OrthographicCamera* cam2 = new GeometryEngine::OrthographicCamera(QVector4D(0, this->height() / 2, this->width()/2, this->height() / 2), QRect(-10, 10, 20, 20));
+		//GeometryEngine::OrthographicCamera* cam2 = new GeometryEngine::OrthographicCamera(QVector4D(0, this->height() / 2, this->width()/2, this->height() / 2), QRect(-10, 10, 20, 20));
 		scene->AddItem(testCube);
 		scene->AddItem(testCube2);
 		scene->AddCamera(cam);
-		scene->AddCamera(cam2);
+		//scene->AddCamera(cam2);
 		scene->InitializeGL();
 		engine->GetSceneManager()->SetActiveScene(scene);
 	}
