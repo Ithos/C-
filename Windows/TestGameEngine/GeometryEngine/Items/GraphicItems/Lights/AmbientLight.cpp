@@ -50,12 +50,12 @@ void GeometryEngine::AmbientLight::calculateContribution(QOpenGLBuffer* arrayBuf
 	// Tell OpenGL programmable pipeline how to locate vertex position data
 	int vertexLocation = mpProgram->attributeLocation("posAttr");
 	mpProgram->enableAttributeArray(vertexLocation);
-	mpProgram->setAttributeBuffer(vertexLocation, GL_FLOAT, VertexData::GetPositionOffset(), 3, sizeof(VertexData));
+	mpProgram->setAttributeBuffer(vertexLocation, GL_FLOAT, VertexData::POSITION_OFFSET, 3, sizeof(VertexData));
 
 	// Tell OpenGL programmable pipeline how to locate vertex position data
 	int normalVector = mpProgram->attributeLocation("aNormal");
 	mpProgram->enableAttributeArray(normalVector);
-	mpProgram->setAttributeBuffer(normalVector, GL_FLOAT, VertexData::GetNormalOffset(), 3, sizeof(VertexData));
+	mpProgram->setAttributeBuffer(normalVector, GL_FLOAT, VertexData::NORMALS_OFFSET, 3, sizeof(VertexData));
 
 	// Draw cube geometry using indices from VBO 1
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, totalVertexNum);

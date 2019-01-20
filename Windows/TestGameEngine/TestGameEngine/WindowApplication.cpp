@@ -118,7 +118,7 @@ namespace Application
 		/*GeometryEngine::PerspectiveCamera**/ cam = new GeometryEngine::PerspectiveCamera(QVector4D(0, 0, this->width(), this->height()), 45.0f, 1.0f, true, 0.1f, 30.0f, 
 																			QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f, 0.0f, 0.0f));
 
-		mainLight = new GeometryEngine::Spotlight(45.0f, QVector3D(0.5f, 0.3f, 0.1f), QVector3D(0.0, -1.0, 0.0), QVector3D(0.7f, 0.7f, 0.7f),
+		mainLight = new GeometryEngine::DirectionalLight(/*45.0f, QVector3D(0.5f, 0.3f, 0.1f), */QVector3D(0.0, -1.0, 0.0), QVector3D(0.7f, 0.7f, 0.7f),
 			QVector3D(0.4f, 0.4f, 0.4f), QVector3D(1.0f, 1.0f, 1.0f), QVector3D(0.0f, 5.0f, -15.0f));
 
 		GeometryEngine::Cube* lightCube = new GeometryEngine::Cube(mat, 0.2f, QVector3D(0.0f, 5.0f, -15.0f), QVector3D(0.1f, 0.1f, 0.1f), QVector3D(1.0f, 1.0f, 1.0f));

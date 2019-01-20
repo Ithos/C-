@@ -94,23 +94,14 @@ void GeometryEngine::TextureMaterial::drawMaterial(QOpenGLBuffer * arrayBuf, QOp
 	arrayBuf->bind();
 	indexBuf->bind();
 
-	// Offset for position
-	quintptr offset = 0;
-
 	// Tell OpenGL programmable pipeline how to locate vertex position data
 	int vertexLocation = mpProgram->attributeLocation("vertex");
 	mpProgram->enableAttributeArray(vertexLocation);
-	mpProgram->setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(VertexData));
-
-	// Offset for color value
-	offset += sizeof(QVector3D);
-
-	// Offset for texture coordinates
-	offset += sizeof(QVector3D);
+	mpProgram->setAttributeBuffer(vertexLocation, GL_FLOAT, VertexData::POSITION_OFFSET, 3, sizeof(VertexData));
 
 	int texCoordLocation = mpProgram->attributeLocation("texCoord");
 	mpProgram->enableAttributeArray(texCoordLocation);
-	mpProgram->setAttributeBuffer(texCoordLocation, GL_FLOAT, offset, 2, sizeof(VertexData));
+	mpProgram->setAttributeBuffer(texCoordLocation, GL_FLOAT, VertexData::TEXTURE_COORDINATES_OFFSET, 2, sizeof(VertexData));
 
 	int vertexCount = 0;
 

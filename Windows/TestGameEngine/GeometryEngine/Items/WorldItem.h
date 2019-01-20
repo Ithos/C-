@@ -19,10 +19,10 @@ namespace GeometryEngine
 		QVector2D texCoord;
 		QVector3D normal;
 
-		static unsigned int GetPositionOffset() { return 0; }
-		static unsigned int GetColorOffset() { return sizeof(QVector3D); }
-		static unsigned int GetTexCoordOffset() { return sizeof(QVector3D) + sizeof(QVector3D); }
-		static unsigned int GetNormalOffset() { return sizeof(QVector3D) + sizeof(QVector3D) + sizeof(QVector2D); }
+		static const unsigned int POSITION_OFFSET = 0;
+		static const unsigned int COLOR_OFFSET = sizeof(QVector3D);
+		static const unsigned int TEXTURE_COORDINATES_OFFSET = sizeof(QVector3D) + sizeof(QVector3D);
+		static const unsigned int NORMALS_OFFSET = sizeof(QVector3D) + sizeof(QVector3D) + sizeof(QVector2D);
 	};
 
 	class WorldItem : protected QOpenGLFunctions

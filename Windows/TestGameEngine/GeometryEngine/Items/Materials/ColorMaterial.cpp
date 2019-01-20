@@ -44,21 +44,15 @@ void GeometryEngine::ColorMaterial::drawMaterial(QOpenGLBuffer * arrayBuf, QOpen
 	arrayBuf->bind();
 	indexBuf->bind();
 
-	// Offset for position
-	quintptr offset = 0;
-
 	// Tell OpenGL programmable pipeline how to locate vertex position data
 	int vertexLocation = mpProgram->attributeLocation("posAttr");
 	mpProgram->enableAttributeArray(vertexLocation);
-	mpProgram->setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(VertexData));
-
-	// Offset for color value
-	offset += sizeof(QVector3D);
+	mpProgram->setAttributeBuffer(vertexLocation, GL_FLOAT, VertexData::POSITION_OFFSET, 3, sizeof(VertexData));
 
 	// Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
 	int color = mpProgram->attributeLocation("colAttr");
 	mpProgram->enableAttributeArray(color);
-	mpProgram->setAttributeBuffer(color, GL_FLOAT, offset, 3, sizeof(VertexData));
+	mpProgram->setAttributeBuffer(color, GL_FLOAT, VertexData::COLOR_OFFSET, 3, sizeof(VertexData));
 
 	// Draw cube geometry using indices from VBO 1
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, totalVertexNumber);
