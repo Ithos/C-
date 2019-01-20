@@ -15,7 +15,9 @@ namespace GeometryEngine
 			const QVector3D & rot = QVector3D(0.0f, 0.0f, 0.0f), const QVector3D & scale = QVector3D(1.0f, 1.0f, 1.0f), WorldItem* parent = nullptr);
 		~Camera();
 
-		virtual const QMatrix4x4& GetProjectionMatrix() { return mProjection; };
+		virtual const QMatrix4x4& GetProjectionMatrix() { return mProjection; }
+		virtual const QMatrix4x4& GetViewMatrix() { return mModelMatrix; }
+		virtual const QMatrix4x4& GetViewProjectionMatrix() { return mViewProjection; }
 		virtual void SetViewport(const QVector4D& size) { mViewportSize.setX(size.x()); mViewportSize.setY(size.y()); mViewportSize.setZ(size.z()); mViewportSize.setW(size.w()); }
 		void SetBoundaries(GLdouble zNear, GLdouble zFar) { mZNear = zNear; mZFar = zFar; }
 		virtual void CalculateProjectionMatrix() = 0;
@@ -28,9 +30,10 @@ namespace GeometryEngine
 		GLdouble mZFar;
 		QVector4D mViewportSize;
 		QMatrix4x4 mProjection;
+		QMatrix4x4 mViewProjection;
 		bool mAutoResize;
 		virtual void ResetCameraBeforeCalculation();
-		virtual void ApplyCameraModelMatrix() { mProjection *= mModelMatrix; };
+		virtual void ApplyCameraModelMatrix() { mViewProjection = mProjection * mModelMatrix; };
 	};
 
 }

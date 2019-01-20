@@ -7,6 +7,13 @@
 #include <Items/GraphicItems/Camera.h>
 #include <Items/GraphicItems/Cameras/PerspectiveCamera.h>
 #include <Items/GraphicItems/Cameras/OrthographicCamera.h>
+#include <Items/Materials/ColorMaterial.h>
+#include <Items/Materials/TextureMaterial.h>
+#include <Textures.h>
+#include <Items\GraphicItems\Lights\AmbientLight.h>
+#include <Items\GraphicItems\Lights\DirectionalLight.h>
+#include <Items\GraphicItems\Lights\PointLight.h>
+#include <Items\GraphicItems\Lights\Spotlight.h>
 
 namespace Application
 {
@@ -77,11 +84,12 @@ namespace Application
 		// Draw cube geometry
 		GeometryEngine::GeometryScene * scene = mpGeomInstance->GetSceneManager()->GetActiveScene();
 
-		QVector3D rotation = QVector3D(0.0f, 0.0f, 1.0f);
+		QVector3D rotation = QVector3D(0.0f, 0.3f, 0.0f);
 
 		testCube->Rotate(testCube->ToModelCoordSystem(rotation));
 		testCube2->Rotate(testCube2->ToModelCoordSystem(rotation));
-		cam->Rotate(rotation);
+
+		//cam->Rotate(rotation);
 
 		if (scene != nullptr)
 		{
@@ -91,14 +99,36 @@ namespace Application
 	void CWindowApplication::initGeometry(GeometryEngine::GeometryEngine* engine)
 	{
 		GeometryEngine::GeometryScene* scene = engine->GetSceneManager()->CreateScene();
-		/*GeometryEngine::Cube**/ testCube = new GeometryEngine::Cube(QVector3D(-5.0f, 0.0f, -15.0f), QVector3D(30.0f, -30.0f, 0.0f));
-		/*GeometryEngine::Cube**/ testCube2 = new GeometryEngine::Cube(QVector3D(5.0f, 0.0f, -15.0f), QVector3D(-30.0f, 30.0f, 0.0f));
+		GeometryEngine::ColorMaterial mat( QVector3D(1.0f, 0.4f, 0.3f) );
+
+		std::list< GeometryEngine::TextureParameters* > tmpList;
+
+		GeometryEngine::TextureParameters left = GeometryEngine::TextureParameters(GeometryEngine::TextureConstant::TEST_RIGHT_TEXTURE, 4, true);
+		GeometryEngine::TextureParameters back = GeometryEngine::TextureParameters(GeometryEngine::TextureConstant::TEST_BACK_TEXTURE, 4, true);
+		GeometryEngine::TextureParameters down = GeometryEngine::TextureParameters(GeometryEngine::TextureConstant::TEST_DOWN_TEXTURE, 4, true);
+		GeometryEngine::TextureParameters front = GeometryEngine::TextureParameters(GeometryEngine::TextureConstant::TEST_FORWARD_TEXTURE, 4, true);
+		GeometryEngine::TextureParameters right = GeometryEngine::TextureParameters(GeometryEngine::TextureConstant::TEST_LEFT_TEXTURE, 4, true);
+		GeometryEngine::TextureParameters up = GeometryEngine::TextureParameters(GeometryEngine::TextureConstant::TEST_UP_TEXTURE, 4, true);
+
+		tmpList.push_back(&back); tmpList.push_back(&right); tmpList.push_back(&front); tmpList.push_back(&left); tmpList.push_back(&down); tmpList.push_back(&up);
+
+		GeometryEngine::TextureMaterial tMat(tmpList);
+		/*GeometryEngine::Cube**/ testCube = new GeometryEngine::Cube( tMat, 4.0f,QVector3D(-5.0f, 0.0f, -15.0f), QVector3D(30.0f, -30.0f, 0.0f));
+		/*GeometryEngine::Cube**/ testCube2 = new GeometryEngine::Cube(mat, 2.0f, QVector3D(5.0f, 0.0f, -15.0f), QVector3D(-30.0f, 30.0f, 0.0f));
 		/*GeometryEngine::PerspectiveCamera**/ cam = new GeometryEngine::PerspectiveCamera(QVector4D(0, 0, this->width(), this->height()), 45.0f, 1.0f, true, 0.1f, 30.0f, 
 																			QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f, 0.0f, 0.0f));
+
+		mainLight = new GeometryEngine::Spotlight(45.0f, QVector3D(0.5f, 0.3f, 0.1f), QVector3D(0.0, -1.0, 0.0), QVector3D(0.7f, 0.7f, 0.7f),
+			QVector3D(0.4f, 0.4f, 0.4f), QVector3D(1.0f, 1.0f, 1.0f), QVector3D(0.0f, 5.0f, -15.0f));
+
+		GeometryEngine::Cube* lightCube = new GeometryEngine::Cube(mat, 0.2f, QVector3D(0.0f, 5.0f, -15.0f), QVector3D(0.1f, 0.1f, 0.1f), QVector3D(1.0f, 1.0f, 1.0f));
+
 		//GeometryEngine::OrthographicCamera* cam2 = new GeometryEngine::OrthographicCamera(QVector4D(0, this->height() / 2, this->width()/2, this->height() / 2), QRect(-10, 10, 20, 20));
 		scene->AddItem(testCube);
 		scene->AddItem(testCube2);
+		scene->AddItem(lightCube);
 		scene->AddCamera(cam);
+		scene->AddLight(mainLight);
 		//scene->AddCamera(cam2);
 		scene->InitializeGL();
 		engine->GetSceneManager()->SetActiveScene(scene);

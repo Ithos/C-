@@ -128,12 +128,15 @@
     <ClCompile Include="ConfigurationManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="Textures.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConfigFileFunctions.h" />
     <ClInclude Include="ConfigurationManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="StringFunctions.h" />
+    <ClInclude Include="Textures.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

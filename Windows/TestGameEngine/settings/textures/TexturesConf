@@ -1,0 +1,8 @@
+ERROR_TEXTURE = Error.png
+TEST_BLUE_CHIP_TEXTURE = texture.jpg
+TEST_DOWN_TEXTURE = DownTest.bmp
+TEST_UP_TEXTURE = UpTest.bmp
+TEST_FORWARD_TEXTURE = FrontTest.bmp
+TEST_BACK_TEXTURE = BackTest.bmp
+TEST_LEFT_TEXTURE = LeftTest.bmp
+TEST_RIGHT_TEXTURE = RightTest.bmp

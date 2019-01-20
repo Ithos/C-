@@ -54,8 +54,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_3DCORE_LIB;QT_3DANIMATION_LIB;QT_3DEXTRAS_LIB;QT_3DINPUT_LIB;QT_3DLOGIC_LIB;QT_3DRENDER_LIB;QT_CORE_LIB;QT_OPENGL_LIB;QT_OPENGLEXTENSIONS_LIB;GEOMETRYENGINE_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\Qt3DCore;$(QTDIR)\include\Qt3DAnimation;$(QTDIR)\include\Qt3DExtras;$(QTDIR)\include\Qt3DInput;$(QTDIR)\include\Qt3DLogic;$(QTDIR)\include\Qt3DRender;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtOpenGLExtensions;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_3DCORE_LIB;QT_3DANIMATION_LIB;QT_3DEXTRAS_LIB;QT_3DINPUT_LIB;QT_3DLOGIC_LIB;QT_3DRENDER_LIB;QT_CORE_LIB;QT_OPENGL_LIB;QT_OPENGLEXTENSIONS_LIB;GEOMETRYENGINE_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\Qt3DCore;$(QTDIR)\include\Qt3DAnimation;$(QTDIR)\include\Qt3DExtras;$(QTDIR)\include\Qt3DInput;$(QTDIR)\include\Qt3DLogic;$(QTDIR)\include\Qt3DRender;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtOpenGLExtensions;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;..\Common;$(QTDIR)\include\QtMultimedia;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -66,19 +66,19 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt53DCored.lib;Qt53DAnimationd.lib;Qt53DExtrasd.lib;Qt53DInputd.lib;Qt53DLogicd.lib;Qt53DRenderd.lib;Qt5Cored.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5OpenGLExtensionsd.lib;Qt5Widgetsd.lib;Qt5Guid.lib;%(AdditionalDependencies);Common.lib</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt53DCored.lib;Qt53DAnimationd.lib;Qt53DExtrasd.lib;Qt53DInputd.lib;Qt53DLogicd.lib;Qt53DRenderd.lib;Qt5Cored.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5OpenGLExtensionsd.lib;Qt5Widgetsd.lib;Qt5Guid.lib;\;$(INHERIT)\;Common.lib;Qt5Multimediad.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
     </Link>
     <QtMoc>
-      <Define>UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_3DCORE_LIB;QT_3DANIMATION_LIB;QT_3DEXTRAS_LIB;QT_3DINPUT_LIB;QT_3DLOGIC_LIB;QT_3DRENDER_LIB;QT_CORE_LIB;QT_OPENGL_LIB;QT_OPENGLEXTENSIONS_LIB;GEOMETRYENGINE_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;%(PreprocessorDefinitions)</Define>
-      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\Qt3DCore;$(QTDIR)\include\Qt3DAnimation;$(QTDIR)\include\Qt3DExtras;$(QTDIR)\include\Qt3DInput;$(QTDIR)\include\Qt3DLogic;$(QTDIR)\include\Qt3DRender;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtOpenGLExtensions;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;..\Common;%(AdditionalIncludeDirectories)</IncludePath>
+      <Define>UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_3DCORE_LIB;QT_3DANIMATION_LIB;QT_3DEXTRAS_LIB;QT_3DINPUT_LIB;QT_3DLOGIC_LIB;QT_3DRENDER_LIB;QT_CORE_LIB;QT_OPENGL_LIB;QT_OPENGLEXTENSIONS_LIB;GEOMETRYENGINE_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;%(PreprocessorDefinitions)</Define>
+      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\Qt3DCore;$(QTDIR)\include\Qt3DAnimation;$(QTDIR)\include\Qt3DExtras;$(QTDIR)\include\Qt3DInput;$(QTDIR)\include\Qt3DLogic;$(QTDIR)\include\Qt3DRender;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtOpenGLExtensions;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;..\Common;$(QTDIR)\include\QtMultimedia;%(AdditionalIncludeDirectories)</IncludePath>
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_3DCORE_LIB;QT_3DANIMATION_LIB;QT_3DEXTRAS_LIB;QT_3DINPUT_LIB;QT_3DLOGIC_LIB;QT_3DRENDER_LIB;QT_CORE_LIB;QT_OPENGL_LIB;QT_OPENGLEXTENSIONS_LIB;GEOMETRYENGINE_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\Qt3DCore;$(QTDIR)\include\Qt3DAnimation;$(QTDIR)\include\Qt3DExtras;$(QTDIR)\include\Qt3DInput;$(QTDIR)\include\Qt3DLogic;$(QTDIR)\include\Qt3DRender;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtOpenGLExtensions;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_3DCORE_LIB;QT_3DANIMATION_LIB;QT_3DEXTRAS_LIB;QT_3DINPUT_LIB;QT_3DLOGIC_LIB;QT_3DRENDER_LIB;QT_CORE_LIB;QT_OPENGL_LIB;QT_OPENGLEXTENSIONS_LIB;GEOMETRYENGINE_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\Qt3DCore;$(QTDIR)\include\Qt3DAnimation;$(QTDIR)\include\Qt3DExtras;$(QTDIR)\include\Qt3DInput;$(QTDIR)\include\Qt3DLogic;$(QTDIR)\include\Qt3DRender;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtOpenGLExtensions;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;..\Common;$(QTDIR)\include\QtMultimedia;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -88,12 +88,12 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>qtmain.lib;Qt53DCore.lib;Qt53DAnimation.lib;Qt53DExtras.lib;Qt53DInput.lib;Qt53DLogic.lib;Qt53DRender.lib;Qt5Core.lib;Qt5OpenGL.lib;opengl32.lib;glu32.lib;Qt5OpenGLExtensions.lib;Qt5Widgets.lib;Qt5Gui.lib;%(AdditionalDependencies);Common.lib</AdditionalDependencies>
+      <AdditionalDependencies>qtmain.lib;Qt53DCore.lib;Qt53DAnimation.lib;Qt53DExtras.lib;Qt53DInput.lib;Qt53DLogic.lib;Qt53DRender.lib;Qt5Core.lib;Qt5OpenGL.lib;opengl32.lib;glu32.lib;Qt5OpenGLExtensions.lib;Qt5Widgets.lib;Qt5Gui.lib;\;$(INHERIT)\;Common.lib;Qt5Multimedia.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
     </Link>
     <QtMoc>
-      <Define>UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_3DCORE_LIB;QT_3DANIMATION_LIB;QT_3DEXTRAS_LIB;QT_3DINPUT_LIB;QT_3DLOGIC_LIB;QT_3DRENDER_LIB;QT_CORE_LIB;QT_OPENGL_LIB;QT_OPENGLEXTENSIONS_LIB;GEOMETRYENGINE_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;%(PreprocessorDefinitions)</Define>
-      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\Qt3DCore;$(QTDIR)\include\Qt3DAnimation;$(QTDIR)\include\Qt3DExtras;$(QTDIR)\include\Qt3DInput;$(QTDIR)\include\Qt3DLogic;$(QTDIR)\include\Qt3DRender;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtOpenGLExtensions;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;..\Common;%(AdditionalIncludeDirectories)</IncludePath>
+      <Define>UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_3DCORE_LIB;QT_3DANIMATION_LIB;QT_3DEXTRAS_LIB;QT_3DINPUT_LIB;QT_3DLOGIC_LIB;QT_3DRENDER_LIB;QT_CORE_LIB;QT_OPENGL_LIB;QT_OPENGLEXTENSIONS_LIB;GEOMETRYENGINE_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_MULTIMEDIA_LIB;%(PreprocessorDefinitions)</Define>
+      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\Qt3DCore;$(QTDIR)\include\Qt3DAnimation;$(QTDIR)\include\Qt3DExtras;$(QTDIR)\include\Qt3DInput;$(QTDIR)\include\Qt3DLogic;$(QTDIR)\include\Qt3DRender;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtOpenGLExtensions;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;..\Common;$(QTDIR)\include\QtMultimedia;%(AdditionalIncludeDirectories)</IncludePath>
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -104,7 +104,16 @@
     <ClInclude Include="Items\GraphicItems\Camera.h" />
     <ClInclude Include="Items\GraphicItems\Cameras\OrthographicCamera.h" />
     <ClInclude Include="Items\GraphicItems\Cameras\PerspectiveCamera.h" />
+    <ClInclude Include="Items\GraphicItems\Light.h" />
+    <ClInclude Include="Items\GraphicItems\Lights\AmbientLight.h" />
+    <ClInclude Include="Items\GraphicItems\Lights\DirectionalLight.h" />
+    <ClInclude Include="Items\GraphicItems\Lights\PointLight.h" />
+    <ClInclude Include="Items\GraphicItems\Lights\Spotlight.h" />
+    <ClInclude Include="Items\Materials\ColorMaterial.h" />
+    <ClInclude Include="Items\Materials\Material.h" />
+    <ClInclude Include="Items\Materials\TextureMaterial.h" />
     <ClInclude Include="Items\WorldItem.h" />
+    <ClInclude Include="Render Utils\GBuffer.h" />
     <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
@@ -115,7 +124,16 @@
     <ClCompile Include="Items\GraphicItems\Camera.cpp" />
     <ClCompile Include="Items\GraphicItems\Cameras\OrthographicCamera.cpp" />
     <ClCompile Include="Items\GraphicItems\Cameras\PerspectiveCamera.cpp" />
+    <ClCompile Include="Items\GraphicItems\Light.cpp" />
+    <ClCompile Include="Items\GraphicItems\Lights\AmbientLight.cpp" />
+    <ClCompile Include="Items\GraphicItems\Lights\DirectionalLight.cpp" />
+    <ClCompile Include="Items\GraphicItems\Lights\PointLight.cpp" />
+    <ClCompile Include="Items\GraphicItems\Lights\Spotlight.cpp" />
+    <ClCompile Include="Items\Materials\ColorMaterial.cpp" />
+    <ClCompile Include="Items\Materials\Material.cpp" />
+    <ClCompile Include="Items\Materials\TextureMaterial.cpp" />
     <ClCompile Include="Items\WorldItem.cpp" />
+    <ClCompile Include="Render Utils\GBuffer.cpp" />
     <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>

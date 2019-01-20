@@ -14,43 +14,39 @@
 #include <ConfigurationManager.h>
 #include <ShaderManager.h>
 #include "WorldItem.h"
+#include "Materials\Material.h"
 
 namespace GeometryEngine
 {
-
-	struct VertexData
-	{
-		QVector3D position;
-		QVector3D color;
-		QVector2D texCoord;
-	};
+	class Material;
 
 	class GeometryItem : public WorldItem
 	{
 	public:
-		GeometryItem(const QVector3D& pos = QVector3D(0.0f, 0.0f, 0.0f), const QVector3D & rot = QVector3D(0.0f, 0.0f, 0.0f),
+		GeometryItem(const Material& mat, const QVector3D& pos = QVector3D(0.0f, 0.0f, 0.0f), const QVector3D & rot = QVector3D(0.0f, 0.0f, 0.0f),
 			const QVector3D & scale = QVector3D(1.0f, 1.0f, 1.0f), WorldItem* parent = nullptr);
 		virtual ~GeometryItem();
-		virtual void DrawItem(const QMatrix4x4& projection);
-		virtual void Update(const QMatrix4x4& projectionMatrix) override { DrawItem(projectionMatrix); };
-		
+		virtual void DrawItem(const QMatrix4x4& projectionView);
+		virtual void Update(const QMatrix4x4& projectionViewMatrix) override { DrawItem(projectionViewMatrix); };
+		virtual Material* GetMaterialPtr() { return mpMaterial; }
+		virtual QOpenGLBuffer* GetArrayBuffer() { return mpArrayBuf; }
+		virtual QOpenGLBuffer* GetIndexBuffer() { return mpIndexBuf; }
+		virtual unsigned int GetVertexNumber() { return mTotalVertexNumber; }
+		virtual void SetMaterial(Material* mat);
 
 	protected:
 		virtual void initGeometry() = 0;
-		virtual void initShaders() = 0;
-		virtual void initProgram();
 		virtual void initItem();
-		virtual void drawGeometry() = 0;
-		virtual void setProgramParameters(const QMatrix4x4& projection) = 0;
 		
 
 		QOpenGLBuffer* mpArrayBuf;
 		QOpenGLBuffer* mpIndexBuf;
-		QOpenGLShaderProgram* mpProgram;
+		Material* mpMaterial;
 		Configuration::ConfigurationManager* mpConfInstance;
-		std::list<std::string> mVertexShaderKeyList;
-		std::list<std::string> mFragmentShaderKeyList;
+		std::string mVertexShaderKey;
+		std::string mFragmentShaderKey;
 		ShaderFiles::ShaderManager* mpShaderManager;
+		unsigned int mTotalVertexNumber;
 		
 	
 	};

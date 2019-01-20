@@ -10,6 +10,8 @@ namespace Configuration
 	const std::string ConfigurationManagerConstants::FRAGMENT_SHADER_FOLDER = "FRAGMENT_SHADER_FOLDER";
 	const std::string ConfigurationManagerConstants::CONFIG_FRAGMENT_SHADER = "CONFIG_FRAGMENT_SHADER";
 	const std::string ConfigurationManagerConstants::CONFIG_VERTEX_SHADER = "CONFIG_VERTEX_SHADER";
+	const std::string ConfigurationManagerConstants::TEXTURES_FOLDER = "TEXTURES_FOLDER";
+	const std::string ConfigurationManagerConstants::CONFIG_TEXTURES = "CONFIG_TEXTURES";
 	const char ConfigurationManagerConstants::SEPARATOR = '=';
 
 	ConfigurationManager * ConfigurationManager::GetInstance()
@@ -46,6 +48,8 @@ namespace Configuration
 		_mConfigMap[ConfigurationManagerConstants::FRAGMENT_SHADER_FOLDER] = &_mFragmentShaderFolder;
 		_mConfigMap[ConfigurationManagerConstants::CONFIG_FRAGMENT_SHADER] = &_mFragmentShaderConfig;
 		_mConfigMap[ConfigurationManagerConstants::CONFIG_VERTEX_SHADER] = &_mVertexShaderConfig;
+		_mConfigMap[ConfigurationManagerConstants::TEXTURES_FOLDER] = &_mTexturesFolder;
+		_mConfigMap[ConfigurationManagerConstants::CONFIG_TEXTURES] = &_mTexturesConfig;
 
 		readConfigFile(_mConfigMap);
 	}

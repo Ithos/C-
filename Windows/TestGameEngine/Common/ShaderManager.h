@@ -3,7 +3,7 @@
 #ifndef __SHADERFILES_SHADERMANAGER_H
 #define __SHADERFILES_SHADERMANAGER_H
 
-#include "StringFunctions.h"
+#include "ConfigFileFunctions.h"
 #include "Shader.h"
 #include <iostream>
 #include <cassert>
@@ -50,7 +50,6 @@ namespace ShaderFiles
 		virtual ~ShaderManager();
 
 		void init();
-		void readConfFile(const std::string& folderPath, const std::string& confFile);
 	};
 }
 #endif

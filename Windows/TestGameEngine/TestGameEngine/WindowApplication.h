@@ -22,6 +22,7 @@ namespace GeometryEngine {
 	class GeometryEngine;
 	class Cube;
 	class PerspectiveCamera;
+	class Light;
 }
 
 namespace Application
@@ -56,6 +57,7 @@ namespace Application
 		GeometryEngine::Cube* testCube;
 		GeometryEngine::Cube* testCube2;
 		GeometryEngine::PerspectiveCamera* cam;
+		GeometryEngine::Light* mainLight;
 
 	};
 }

@@ -81,24 +81,10 @@ namespace ShaderFiles
 
 	void ShaderManager::init()
 	{
-		readConfFile(_mVertexFolder, _mVertexConf);
-		readConfFile(_mFragmentFolder, _mFragmentConf);
-	}
+		assert(ConfigFileFunctions::ConfigFileFunctions::ReadConfigFileIntoStringMap(_mVertexFolder, _mVertexConf, ShaderManagerConstants::SEPARATOR, _mShadersDirs) == 
+			ConfigFileFunctions::ReadConfigErrorCodes::SUCCESS);
 
-	void ShaderManager::readConfFile(const std::string & folderPath, const std::string& confFile)
-	{
-		std::ifstream infile(std::string(folderPath).append(confFile));
-		assert(infile.is_open() && "Shader config file not found");
-
-		std::string line;
-		while (std::getline(infile, line))
-		{
-			std::vector<std::string> tokenConfig;
-			StringFunctions::StringFunctions::splitString(StringFunctions::StringFunctions::trim(line), ShaderManagerConstants::SEPARATOR, tokenConfig);
-
-			assert(_mShadersDirs.find(tokenConfig[0]) == _mShadersDirs.end() && "Shaders keys are not unique");
-
-			_mShadersDirs.insert(std::pair<std::string, std::string>(tokenConfig[0], std::string(folderPath).append(tokenConfig[1])));
-		}
+		assert(ConfigFileFunctions::ConfigFileFunctions::ReadConfigFileIntoStringMap(_mFragmentFolder, _mFragmentConf, ShaderManagerConstants::SEPARATOR, _mShadersDirs) == 
+			ConfigFileFunctions::ReadConfigErrorCodes::SUCCESS);
 	}
 }

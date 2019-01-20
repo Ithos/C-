@@ -1,1 +1,7 @@
 TEST_VERTEX_SHADER = TestVertexShader.vert
+COLOR_MATERIAL_VERTEX_SHADER = ColorShader.vert
+TEXTURE_MATERIAL_VERTEX_SHADER = TextureMaterial.vert
+AMBIENT_LIGHT_VERTEX_SHADER = Lights\AmbientLight.vert
+DIRECTIONAL_LIGHT_VERTEX_SHADER = Lights\DirectionalLight.vert
+POINT_LIGHT_VERTEX_SHADER = Lights\PointLight.vert
+FLASHLIGHT_VERTEX_SHADER = Lights\Flashlight.vert

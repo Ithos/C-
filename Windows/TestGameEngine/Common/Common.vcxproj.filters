@@ -30,11 +30,14 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="ConfigurationManager.cpp" />
+    <ClCompile Include="Textures.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StringFunctions.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="ConfigurationManager.h" />
+    <ClInclude Include="Textures.h" />
+    <ClInclude Include="ConfigFileFunctions.h" />
   </ItemGroup>
 </Project>

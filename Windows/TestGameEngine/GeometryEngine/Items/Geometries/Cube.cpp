@@ -1,7 +1,7 @@
 #include "Cube.h"
 
-GeometryEngine::Cube::Cube(const QVector3D& pos, const QVector3D & rot,	const QVector3D & scale, WorldItem* parent): 
-	GeometryItem(pos, rot, scale, parent)
+GeometryEngine::Cube::Cube( const Material& mat, float size, const QVector3D& pos, const QVector3D & rot,	const QVector3D & scale, WorldItem* parent):
+	GeometryItem(mat, pos, rot, scale, parent), mSize(size)
 {
 	initItem();
 }
@@ -13,45 +13,47 @@ GeometryEngine::Cube::~Cube()
 
 void GeometryEngine::Cube::initGeometry()
 {
+	float pos = mSize / 2.0f;
 	// For cube we would need only 8 vertices but we have to
 	// duplicate vertex for each face because texture coordinate
 	// is different.
 	VertexData vertices[] = {
 		// Vertex data for face 0
-		{ QVector3D(-1.0f, -1.0f,  1.0f), QVector3D(1.0f, 0.0f,0.0f), QVector2D(0.0f, 0.0f) },  // v0
-		{ QVector3D(1.0f, -1.0f,  1.0f), QVector3D(1.0f, 0.0f,0.0f), QVector2D(0.33f, 0.0f) }, // v1
-		{ QVector3D(-1.0f,  1.0f,  1.0f), QVector3D(1.0f, 0.0f,0.0f), QVector2D(0.0f, 0.5f) },  // v2
-		{ QVector3D(1.0f,  1.0f,  1.0f), QVector3D(1.0f, 0.0f,0.0f), QVector2D(0.33f, 0.5f) }, // v3
+		{ QVector3D(-pos, -pos,  pos), QVector3D(1.0f, 0.0f,0.0f), QVector2D( 0.0f,0.0f),  QVector3D(0.0f, 0.0f, 1.0f) },  // v0
+		{ QVector3D(pos, -pos,  pos),  QVector3D(1.0f, 0.0f,0.0f), QVector2D(1.0f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f) }, // v1
+		{ QVector3D(-pos,  pos,  pos), QVector3D(1.0f, 0.0f,0.0f), QVector2D(0.0f, 1.0f),  QVector3D(0.0f, 0.0f, 1.0f) },  // v2
+		{ QVector3D(pos,  pos,  pos),  QVector3D(1.0f, 0.0f,0.0f), QVector2D(1.0f, 1.0f), QVector3D(0.0f, 0.0f, 1.0f) }, // v3
+		
 
-																							   // Vertex data for face 1
-		{ QVector3D(1.0f, -1.0f,  1.0f), QVector3D(0.0f, 1.0f,0.0f), QVector2D(0.0f, 0.5f) }, // v4
-		{ QVector3D(1.0f, -1.0f, -1.0f), QVector3D(0.0f, 1.0f,0.0f), QVector2D(0.33f, 0.5f) }, // v5
-		{ QVector3D(1.0f,  1.0f,  1.0f), QVector3D(0.0f, 1.0f,0.0f), QVector2D(0.0f, 1.0f) },  // v6
-		{ QVector3D(1.0f,  1.0f, -1.0f), QVector3D(0.0f, 1.0f,0.0f), QVector2D(0.33f, 1.0f) }, // v7
+		// Vertex data for face 1
+		{ QVector3D(pos, -pos,  pos), QVector3D(0.0f, 1.0f,0.0f), QVector2D(0.0f, 0.0f),  QVector3D(1.0f, 0.0f, 0.0f) }, // v4
+		{ QVector3D(pos, -pos, -pos), QVector3D(0.0f, 1.0f,0.0f), QVector2D(1.0f, 0.0f), QVector3D(1.0f, 0.0f, 0.0f) }, // v5
+		{ QVector3D(pos,  pos,  pos), QVector3D(0.0f, 1.0f,0.0f), QVector2D(0.0f, 1.0f),  QVector3D(1.0f, 0.0f, 0.0f) },  // v6
+		{ QVector3D(pos,  pos, -pos), QVector3D(0.0f, 1.0f,0.0f), QVector2D(1.0f, 1.0f), QVector3D(1.0f, 0.0f, 0.0f) }, // v7
 
 																							   // Vertex data for face 2
-		{ QVector3D(1.0f, -1.0f, -1.0f), QVector3D(0.0f, 0.0f,1.0f), QVector2D(0.66f, 0.5f) }, // v8
-		{ QVector3D(-1.0f, -1.0f, -1.0f), QVector3D(0.0f, 0.0f,1.0f), QVector2D(1.0f, 0.5f) },  // v9
-		{ QVector3D(1.0f,  1.0f, -1.0f), QVector3D(0.0f, 0.0f,1.0f), QVector2D(0.66f, 1.0f) }, // v10
-		{ QVector3D(-1.0f,  1.0f, -1.0f), QVector3D(0.0f, 0.0f,1.0f), QVector2D(1.0f, 1.0f) },  // v11
+		{ QVector3D(pos, -pos, -pos),  QVector3D(0.0f, 0.0f,1.0f),  QVector2D(0.0f, 0.0f), QVector3D(0.0f, 0.0f, -1.0f) }, // v8
+		{ QVector3D(-pos, -pos, -pos), QVector3D(0.0f, 0.0f,1.0f),  QVector2D(1.0f, 0.0f),  QVector3D(0.0f, 0.0f, -1.0f) },  // v9
+		{ QVector3D(pos,  pos, -pos),  QVector3D(0.0f, 0.0f,1.0f),  QVector2D(0.0f, 1.0f), QVector3D(0.0f, 0.0f, -1.0f) }, // v10
+		{ QVector3D(-pos,  pos, -pos), QVector3D(0.0f, 0.0f,1.0f),  QVector2D(1.0f, 1.0f),  QVector3D(0.0f, 0.0f, -1.0f) },  // v11
 
 																								// Vertex data for face 3
-		{ QVector3D(-1.0f, -1.0f, -1.0f), QVector3D(1.0f, 1.0f,0.0f), QVector2D(0.66f, 0.0f) }, // v12
-		{ QVector3D(-1.0f, -1.0f,  1.0f), QVector3D(1.0f, 1.0f,0.0f), QVector2D(1.0f, 0.0f) },  // v13
-		{ QVector3D(-1.0f,  1.0f, -1.0f), QVector3D(1.0f, 1.0f,0.0f), QVector2D(0.66f, 0.5f) }, // v14
-		{ QVector3D(-1.0f,  1.0f,  1.0f), QVector3D(1.0f, 1.0f,0.0f), QVector2D(1.0f, 0.5f) },  // v15
+		{ QVector3D(-pos, -pos, -pos), QVector3D(1.0f, 1.0f,0.0f), QVector2D(0.0f, 0.0f),  QVector3D(-1.0f, 0.0f, 0.0f) }, // v12
+		{ QVector3D(-pos, -pos,  pos), QVector3D(1.0f, 1.0f,0.0f), QVector2D(1.0f, 0.0f),   QVector3D(-1.0f, 0.0f, 0.0f) },  // v13
+		{ QVector3D(-pos,  pos, -pos), QVector3D(1.0f, 1.0f,0.0f), QVector2D(0.0f, 1.0f),  QVector3D(-1.0f, 0.0f, 0.0f) }, // v14
+		{ QVector3D(-pos,  pos,  pos), QVector3D(1.0f, 1.0f,0.0f), QVector2D(1.0f, 1.0f),   QVector3D(-1.0f, 0.0f, 0.0f) },  // v15
 
 																								// Vertex data for face 4
-		{ QVector3D(-1.0f, -1.0f, -1.0f), QVector3D(1.0f, 0.0f,1.0f), QVector2D(0.33f, 0.0f) }, // v16
-		{ QVector3D(1.0f, -1.0f, -1.0f), QVector3D(1.0f, 0.0f,1.0f), QVector2D(0.66f, 0.0f) }, // v17
-		{ QVector3D(-1.0f, -1.0f,  1.0f), QVector3D(1.0f, 0.0f,1.0f), QVector2D(0.33f, 0.5f) }, // v18
-		{ QVector3D(1.0f, -1.0f,  1.0f), QVector3D(1.0f, 0.0f,1.0f), QVector2D(0.66f, 0.5f) }, // v19
+		{ QVector3D(-pos, -pos, -pos), QVector3D(1.0f, 0.0f,1.0f), QVector2D(0.0f, 0.0f), QVector3D(0.0f, -1.0f, 0.0f) }, // v16
+		{ QVector3D(pos, -pos, -pos),  QVector3D(1.0f, 0.0f,1.0f), QVector2D(1.0f, 0.0f), QVector3D(0.0f, -1.0f, 0.0f) }, // v17
+		{ QVector3D(-pos, -pos,  pos), QVector3D(1.0f, 0.0f,1.0f), QVector2D(0.0f, 1.0f), QVector3D(0.0f, -1.0f, 0.0f) }, // v18
+		{ QVector3D(pos, -pos,  pos),  QVector3D(1.0f, 0.0f,1.0f), QVector2D(1.0f, 1.0f), QVector3D(0.0f, -1.0f, 0.0f) }, // v19
 
 																							   // Vertex data for face 5
-		{ QVector3D(-1.0f,  1.0f,  1.0f), QVector3D(0.0f, 1.0f,1.0f), QVector2D(0.33f, 0.5f) }, // v20
-		{ QVector3D(1.0f,  1.0f,  1.0f), QVector3D(0.0f, 1.0f,1.0f), QVector2D(0.66f, 0.5f) }, // v21
-		{ QVector3D(-1.0f,  1.0f, -1.0f), QVector3D(0.0f, 1.0f,1.0f), QVector2D(0.33f, 1.0f) }, // v22
-		{ QVector3D(1.0f,  1.0f, -1.0f), QVector3D(0.0f, 1.0f,1.0f), QVector2D(0.66f, 1.0f) }  // v23
+		{ QVector3D(-pos,  pos,  pos), QVector3D(0.0f, 1.0f,1.0f), QVector2D(0.0f, 1.0f), QVector3D(0.0f, 1.0f, 0.0f) }, // v20
+		{ QVector3D(pos,  pos, pos),   QVector3D(0.0f, 1.0f,1.0f), QVector2D(1.0f, 1.0f), QVector3D(0.0f, 1.0f, 0.0f) }, // v21
+		{ QVector3D(-pos,  pos, -pos), QVector3D(0.0f, 1.0f,1.0f), QVector2D(0.0f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f) }, // v22
+		{ QVector3D(pos,  pos, -pos),  QVector3D(0.0f, 1.0f,1.0f), QVector2D(1.0f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f) }  // v23
 	};
 
 	// Indices for drawing cube faces using triangle strips.
@@ -78,60 +80,6 @@ void GeometryEngine::Cube::initGeometry()
 	mpIndexBuf->bind();
 	mpIndexBuf->allocate(indices, 34 * sizeof(GLushort));
 
+	mTotalVertexNumber = 24;
 }
 
-void GeometryEngine::Cube::initShaders()
-{
-	mVertexShaderKeyList.push_back( ShaderFiles::ShaderManagerConstants::TEST_VERTEX_SHADER);
-	mFragmentShaderKeyList.push_back( ShaderFiles::ShaderManagerConstants::TEST_FRAGMENT_SHADER);
-	
-	if (!mpShaderManager->IsLoaded(ShaderFiles::ShaderManagerConstants::TEST_VERTEX_SHADER))
-	{
-		mpShaderManager->LoadShader(ShaderFiles::ShaderManagerConstants::TEST_VERTEX_SHADER);
-	}
-
-	if (!mpShaderManager->IsLoaded(ShaderFiles::ShaderManagerConstants::TEST_FRAGMENT_SHADER))
-	{
-		mpShaderManager->LoadShader(ShaderFiles::ShaderManagerConstants::TEST_FRAGMENT_SHADER);
-	}
-}
-
-void GeometryEngine::Cube::drawGeometry()
-{
-
-	// Tell OpenGL which VBOs to use
-	mpArrayBuf->bind();
-	mpIndexBuf->bind();
-
-	// Offset for position
-	quintptr offset = 0;
-
-	// Tell OpenGL programmable pipeline how to locate vertex position data
-	int vertexLocation = mpProgram->attributeLocation("posAttr");
-	mpProgram->enableAttributeArray(vertexLocation);
-	mpProgram->setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(VertexData));
-
-	// Offset for texture coordinate
-	offset += sizeof(QVector3D);
-
-	// Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
-	int color = mpProgram->attributeLocation("colAttr");
-	mpProgram->enableAttributeArray(color);
-	mpProgram->setAttributeBuffer(color, GL_FLOAT, offset, 2, sizeof(VertexData));
-
-	// Draw cube geometry using indices from VBO 1
-	glDrawElements(GL_TRIANGLE_STRIP, 34, GL_UNSIGNED_SHORT, 0);
-
-}
-
-void GeometryEngine::Cube::setProgramParameters(const QMatrix4x4& projection)
-{
-	if (mpProgram != nullptr)
-	{
-		// Set modelview-projection matrix
-		mpProgram->setUniformValue("matrix", projection * mModelMatrix);
-
-		// Use texture unit 0 which contains cube.png
-		mpProgram->setUniformValue("colAttr", 0);
-	}
-}

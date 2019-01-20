@@ -1,1 +1,7 @@
 TEST_FRAGMENT_SHADER = TestFragmentShader.frag
+COLOR_MATERIAL_FRAGMENT_SHADER = ColorShader.frag
+TEXTURE_MATERIAL_FRAGMENT_SHADER = TextureMaterial.frag
+AMBIENT_LIGHT_FRAGMENT_SHADER = Lights\AmbientLight.frag
+DIRECTIONAL_LIGHT_FRAGMENT_SHADER = Lights\DirectionalLight.frag
+POINT_LIGHT_FRAGMENT_SHADER = Lights\PointLight.frag
+FLASHLIGHT_FRAGMENT_SHADER = Lights\Flashlight.frag

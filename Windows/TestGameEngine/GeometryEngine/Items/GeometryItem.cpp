@@ -1,8 +1,10 @@
 #include "GeometryItem.h"
 
-GeometryEngine::GeometryItem::GeometryItem(const QVector3D& pos, const QVector3D & rot,	const QVector3D & scale, WorldItem* parent): 
-	WorldItem(pos, rot, scale, parent), mpArrayBuf(nullptr), mpIndexBuf(nullptr), mpProgram(nullptr), mpConfInstance(nullptr)
+GeometryEngine::GeometryItem::GeometryItem(const Material& mat, const QVector3D& pos, const QVector3D & rot,	const QVector3D & scale, WorldItem* parent):
+	WorldItem(pos, rot, scale, parent), mpArrayBuf(nullptr), mpIndexBuf(nullptr), mpMaterial(nullptr), mpConfInstance(nullptr), mVertexShaderKey(""), mFragmentShaderKey(""), 
+	mTotalVertexNumber(0)
 {
+	mpMaterial = mat.Clone();
 }
 
 GeometryEngine::GeometryItem::~GeometryItem()
@@ -21,59 +23,28 @@ GeometryEngine::GeometryItem::~GeometryItem()
 		mpIndexBuf = nullptr;
 	}
 
-	if (mpProgram != nullptr)
+	if (mpMaterial != nullptr)
 	{
-		delete(mpProgram);
-		mpProgram = nullptr;
+		delete(mpMaterial);
+		mpMaterial = nullptr;
 	}
 }
 
-void GeometryEngine::GeometryItem::DrawItem(const QMatrix4x4& projection)
+void GeometryEngine::GeometryItem::DrawItem(const QMatrix4x4& projectionView)
 {
-	if (mpProgram != nullptr)
+	if (mpMaterial != nullptr)
 	{
-		// Link shader pipeline
-		if (!mpProgram->link())
-		{
-			/// TODO -- log error -- ///
-			return;
-		}
-
-		// Bind shader pipeline for use
-		if (!mpProgram->bind())
-		{
-			/// TODO -- log error -- ///
-			return;
-		}
-
-		setProgramParameters(projection);
-
-		drawGeometry();
+		mpMaterial->Draw(mpArrayBuf, mpIndexBuf, mTotalVertexNumber, projectionView, (*this) );
 	}
 }
 
-void GeometryEngine::GeometryItem::initProgram()
+void GeometryEngine::GeometryItem::SetMaterial(Material * mat)
 {
-	for (auto it = mVertexShaderKeyList.begin(); it != mVertexShaderKeyList.end(); ++it)
+	if (mpMaterial != nullptr)
 	{
-		// Compile vertex shader
-		if (!mpProgram->addShaderFromSourceCode(QOpenGLShader::Vertex, mpShaderManager->GetLoadedShaderContent( (*it) ).c_str()))
-		{
-			/// TODO -- log error -- ///
-			return;
-		}
+		delete(mpMaterial);
 	}
-
-	for (auto it = mFragmentShaderKeyList.begin(); it != mFragmentShaderKeyList.end(); ++it)
-	{
-		// Compile fragment shader
-		if (!mpProgram->addShaderFromSourceCode(QOpenGLShader::Fragment, mpShaderManager->GetLoadedShaderContent((*it) ).c_str()))
-		{
-			/// TODO -- log error -- ///
-			return;
-		}
-	}
-
+	mpMaterial = mat->Clone();
 }
 
 void GeometryEngine::GeometryItem::initItem()
@@ -89,10 +60,6 @@ void GeometryEngine::GeometryItem::initItem()
 	mpArrayBuf->create();
 	mpIndexBuf->create();
 
-	mpProgram = new QOpenGLShaderProgram();
-
-	this->initShaders();
-	this->initProgram();
 	this->initGeometry();
 }
 

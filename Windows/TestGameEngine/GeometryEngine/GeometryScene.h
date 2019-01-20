@@ -6,7 +6,9 @@
 #include <QOpenGLFunctions>
 #include <unordered_set>
 #include "Items/WorldItem.h"
+#include "Items\GeometryItem.h"
 #include "Items/GraphicItems/Camera.h"
+#include "Items\GraphicItems\Light.h"
 #include "SceneManager.h"
 
 namespace GeometryEngine
@@ -22,24 +24,23 @@ namespace GeometryEngine
 
 		virtual void ResizeScene(int w, int h, int formerW, int formerH);
 		virtual void Draw();
-		virtual bool AddItem(WorldItem* item);
-		virtual bool RemoveItem(WorldItem* item);
+		virtual bool AddItem(GeometryItem* item);
+		virtual bool RemoveItem(GeometryItem* item);
 		virtual bool AddCamera(Camera* item);
 		virtual bool RemoveCamera(Camera* item);
+		virtual bool AddLight(Light* item);
+		virtual bool RemoveLight(Light* item);
 		virtual void InitializeGL();
 
 	protected:
-		std::unordered_set< WorldItem* > mItemList;// DO NOT DELETE
+		std::unordered_set< GeometryItem* > mItemList;// DO NOT DELETE
 		QMatrix4x4 mProjection;
 		SceneManager* mpParentManager; // DO NOT DELETE
 		QVector4D mClearColor;
 		std::unordered_set< Camera* > mCameras;// DO NOT DELETE
-		/// TODO -- main Camera ?? ///
+		std::unordered_set< Light* > mLights;// DO NOT DELETE
 
-		/// TODO -- move to the camera -- ///
-		GLdouble mFoView;
-		GLdouble mZNear;
-		GLdouble mZFar;
+		virtual void DrawItem(Camera* cam, GeometryItem* item);
 	};
 }
 

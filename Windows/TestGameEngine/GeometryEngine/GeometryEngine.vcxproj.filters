@@ -38,6 +38,33 @@
     <ClInclude Include="Items\GraphicItems\Cameras\OrthographicCamera.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="Items\GraphicItems\Light.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\GraphicItems\Lights\DirectionalLight.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\GraphicItems\Lights\PointLight.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\GraphicItems\Lights\Spotlight.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\GraphicItems\Lights\AmbientLight.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Materials\Material.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Materials\TextureMaterial.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Materials\ColorMaterial.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Render Utils\GBuffer.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeometryEngine.cpp">
@@ -63,6 +90,33 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="Items\GraphicItems\Cameras\PerspectiveCamera.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\GraphicItems\Light.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\GraphicItems\Lights\DirectionalLight.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\GraphicItems\Lights\PointLight.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\GraphicItems\Lights\Spotlight.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\GraphicItems\Lights\AmbientLight.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Materials\Material.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Materials\TextureMaterial.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Materials\ColorMaterial.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Render Utils\GBuffer.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>

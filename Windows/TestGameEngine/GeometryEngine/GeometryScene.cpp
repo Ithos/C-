@@ -1,7 +1,6 @@
 #include "GeometryScene.h"
 
-GeometryEngine::GeometryScene::GeometryScene(SceneManager* manager, GLdouble fovy, GLdouble zNear, GLdouble zFar, QVector4D clearColor) : 
-	mFoView(fovy), mZNear(zNear), mZFar(zFar), mClearColor(clearColor)
+GeometryEngine::GeometryScene::GeometryScene(SceneManager* manager, GLdouble fovy, GLdouble zNear, GLdouble zFar, QVector4D clearColor) : mClearColor(clearColor)
 {
 	mpParentManager = manager;
 	mpParentManager->AddScene(this);
@@ -26,6 +25,23 @@ void GeometryEngine::GeometryScene::InitializeGL()
 
 	// Enable back face culling
 	glEnable(GL_CULL_FACE);
+}
+
+void GeometryEngine::GeometryScene::DrawItem(Camera * cam, GeometryItem * item)
+{
+	for (auto iter = mLights.begin(); iter != mLights.end(); ++iter)
+	{
+		Light* l = (*iter);
+		Material* mat = item->GetMaterialPtr();
+
+		LightingTransformationData ltd(cam->GetProjectionMatrix(), cam->GetViewMatrix(), item->GetModelMatrix(), item->GetRotation());
+		MaterialLightingParameters mlp(mat->GetAmbient(), mat->GetDiffuse(), mat->GetSpecular(), mat->GetShininess());
+
+		l->CalculateLighting(item->GetArrayBuffer(), item->GetIndexBuffer(), ltd, mlp, cam->GetPosition(), item->GetVertexNumber());
+	}
+
+	//item->DrawItem(cam->GetViewProjectionMatrix());
+
 }
 
 void GeometryEngine::GeometryScene::ResizeScene(int w, int h, int formerW, int formerH)
@@ -58,13 +74,14 @@ void GeometryEngine::GeometryScene::Draw()
 
 			for (auto it = mItemList.begin(); it != mItemList.end(); ++it)
 			{
-				(*it)->Update( cam->GetProjectionMatrix() );
+				//(*it)->Update( cam->GetViewProjectionMatrix() );
+				DrawItem(cam, (*it));
 			}
 		}
 	}
 }
 
-bool GeometryEngine::GeometryScene::AddItem(WorldItem* item)
+bool GeometryEngine::GeometryScene::AddItem(GeometryItem* item)
 {
 	if (mItemList.find(item) != mItemList.end())
 		return false;
@@ -73,7 +90,7 @@ bool GeometryEngine::GeometryScene::AddItem(WorldItem* item)
 	return true;
 }
 
-bool GeometryEngine::GeometryScene::RemoveItem(WorldItem* item)
+bool GeometryEngine::GeometryScene::RemoveItem(GeometryItem* item)
 {
 	if(mItemList.find(item) == mItemList.end())
 		return false;
@@ -97,5 +114,23 @@ bool GeometryEngine::GeometryScene::RemoveCamera(Camera * item)
 		return false;
 
 	mCameras.erase(item);
+	return true;
+}
+
+bool GeometryEngine::GeometryScene::AddLight(Light * item)
+{
+	if(mLights.find(item) != mLights.end())
+		return false;
+
+	mLights.insert(item);
+	return true;
+}
+
+bool GeometryEngine::GeometryScene::RemoveLight(Light * item)
+{
+	if(mLights.find(item) == mLights.end())
+		return false;
+
+	mLights.insert(item);
 	return true;
 }

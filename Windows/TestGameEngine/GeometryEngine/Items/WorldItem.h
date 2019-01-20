@@ -5,12 +5,25 @@
 
 #include <QOpenGLFunctions>
 #include <QVector3D>
+#include <QVector2D>
 #include <QQuaternion>
 #include <QMatrix4x4>
 #include <unordered_set>
 
 namespace GeometryEngine
 {
+	struct VertexData
+	{
+		QVector3D position;
+		QVector3D color;
+		QVector2D texCoord;
+		QVector3D normal;
+
+		static unsigned int GetPositionOffset() { return 0; }
+		static unsigned int GetColorOffset() { return sizeof(QVector3D); }
+		static unsigned int GetTexCoordOffset() { return sizeof(QVector3D) + sizeof(QVector3D); }
+		static unsigned int GetNormalOffset() { return sizeof(QVector3D) + sizeof(QVector3D) + sizeof(QVector2D); }
+	};
 
 	class WorldItem : protected QOpenGLFunctions
 	{
@@ -39,9 +52,10 @@ namespace GeometryEngine
 		void SetScale(const QVector3D& scale, bool delayUpdate = false);
 		virtual void CalculateModelMatrix(bool calculateChildren = false);
 		virtual void UpdateModelMatrix(bool updateChildren = false);
-		virtual void Update(const QMatrix4x4& projectionMatrix) {};
+		virtual void Update(const QMatrix4x4& projectionViewMatrix) {};
 		virtual QVector3D ToModelCoordSystem(const QVector3D& vector);
 		virtual QVector3D ToGlobalCoordSystem(const QVector3D& vector );
+		virtual const QMatrix4x4& GetModelMatrix() const { return mModelMatrix; }
 
 	protected:
 
