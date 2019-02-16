@@ -19,7 +19,7 @@ namespace GeometryEngine
 		virtual const QMatrix4x4& GetProjectionMatrix() { return mProjection; }
 		virtual const QMatrix4x4& GetViewMatrix() { return mModelMatrix; }
 		virtual const QMatrix4x4& GetViewProjectionMatrix() { return mViewProjection; }
-		virtual void SetViewport(const QVector4D& size) { mViewportSize.setX(size.x()); mViewportSize.setY(size.y()); mViewportSize.setZ(size.z()); }
+		virtual void SetViewport(const QVector4D& size) { mViewportSize.setX(size.x()); mViewportSize.setY(size.y()); mViewportSize.setZ(size.z()); mViewportSize.setW(size.w()); }
 		void SetBoundaries(GLdouble zNear, GLdouble zFar) { mZNear = zNear; mZFar = zFar; }
 		virtual void CalculateProjectionMatrix() = 0;
 		virtual void UpdateModelMatrix(bool updateChildren = false) override;
