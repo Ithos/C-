@@ -3,11 +3,11 @@
 #ifndef GEOMETRYPERSPECTIVECAMERA_H
 #define GEOMETRYPERSPECTIVECAMERA_H
 
-#include "../Camera.h"
+#include "..\DeferredShadingCamera.h"
 
 namespace GeometryEngine
 {
-	class PerspectiveCamera : public Camera
+	class PerspectiveCamera : public DeferredShadingCamera
 	{
 	public:
 		PerspectiveCamera(const QVector4D& viewportSize, GLdouble fovy = 45.0, GLdouble mAspectRatio = 1.0, bool autoResize = true, GLdouble zNear = 0.1, GLdouble zFar = 30.0,
@@ -17,7 +17,7 @@ namespace GeometryEngine
 		virtual ~PerspectiveCamera();
 		void SetAspectRatio(int w, int h) { mAspectRatio = qreal(w) / qreal(h ? h : 1); }
 		void SetProjection(GLdouble fovy, GLdouble zNear, GLdouble zFar) { mFoView = fovy; SetBoundaries(zNear, zFar); }
-		virtual void SetViewport(const QVector4D& size) override { Camera::SetViewport(size); SetAspectRatio(size.z(), size.w()); }
+		virtual void SetViewport(const QVector4D& size) override { DeferredShadingCamera::SetViewport(size); SetAspectRatio(size.z(), size.w()); }
 
 		virtual void CalculateProjectionMatrix() override;
 

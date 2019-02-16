@@ -4,6 +4,7 @@
 #define GEOMETRYSCENE_H
 
 #include <QOpenGLFunctions>
+#include <QOpenGLExtraFunctions>
 #include <unordered_set>
 #include "Items/WorldItem.h"
 #include "Items\GeometryItem.h"
@@ -11,12 +12,13 @@
 #include "Items\GraphicItems\Light.h"
 #include "SceneManager.h"
 
+
 namespace GeometryEngine
 {
 	class SceneManager;
 	class WorldItem;
 
-	class GeometryScene: protected QOpenGLFunctions
+	class GeometryScene: protected QOpenGLExtraFunctions
 	{
 	public:
 		GeometryScene(SceneManager* manager, GLdouble fovy = 45.0, GLdouble zNear = 0.1, GLdouble zFar = 30.0, QVector4D clearColor = QVector4D(0.0f, 0.0f, 0.0f, 1.0f));
@@ -39,8 +41,21 @@ namespace GeometryEngine
 		QVector4D mClearColor;
 		std::unordered_set< Camera* > mCameras;// DO NOT DELETE
 		std::unordered_set< Light* > mLights;// DO NOT DELETE
+		
 
 		virtual void DrawItem(Camera* cam, GeometryItem* item);
+		virtual void ApplyLight(Camera* cam);
+		virtual void GeometryPass();
+		virtual void PrepareGeomPass();
+		virtual void DisableDepth();
+		virtual void PrepareLightPass();
+		virtual void LightPass();
+
+		////////////////////////////////////////////////////////////////
+		// GEOMETRY BUFFER DEBUG
+		///////////////////////////////////////////////////////////////
+
+		void gBufferDebug(Camera* cam);
 	};
 }
 

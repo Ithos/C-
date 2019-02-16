@@ -26,19 +26,18 @@ void GeometryEngine::ColorMaterial::initShaders()
 	mFragmentShaderKey = MaterialConstants::COLOR_MATERIAL_FRAGMENT_SHADER;
 }
 
-void GeometryEngine::ColorMaterial::setProgramParameters(const QMatrix4x4 & projectionView, const GeometryItem& parent)
+void GeometryEngine::ColorMaterial::setProgramParameters(const QMatrix4x4& projection, const QMatrix4x4& view, const GeometryItem& parent)
 {
 	if (mpProgram != nullptr)
 	{
-		// Set modelview-projection matrix
-		mpProgram->setUniformValue("matrix", projectionView * parent.GetModelMatrix());
-
-		// Use texture unit 0 which contains cube.png
-		mpProgram->setUniformValue("colAttr", 0);
+		// Set matrices
+		mpProgram->setUniformValue("modelViewProjectionMatrix", projection * view * parent.GetModelMatrix());
+		mpProgram->setUniformValue("modelViewMatrix", view * parent.GetModelMatrix());
+		mpProgram->setUniformValue("modelMatrix", parent.GetModelMatrix());
 	}
 }
 
-void GeometryEngine::ColorMaterial::drawMaterial(QOpenGLBuffer * arrayBuf, QOpenGLBuffer * indexBuf, unsigned int totalVertexNumber)
+void GeometryEngine::ColorMaterial::drawMaterial(QOpenGLBuffer * arrayBuf, QOpenGLBuffer * indexBuf, unsigned int totalVertexNumber, unsigned int totalIndexNumber)
 {
 	// Tell OpenGL which VBOs to use
 	arrayBuf->bind();
@@ -54,8 +53,18 @@ void GeometryEngine::ColorMaterial::drawMaterial(QOpenGLBuffer * arrayBuf, QOpen
 	mpProgram->enableAttributeArray(color);
 	mpProgram->setAttributeBuffer(color, GL_FLOAT, VertexData::COLOR_OFFSET, 3, sizeof(VertexData));
 
+	// Tell OpenGL programmable pipeline how to locate texture coordinates
+	int textureCoordinate = mpProgram->attributeLocation("TexCoord");
+	mpProgram->enableAttributeArray(textureCoordinate);
+	mpProgram->setAttributeBuffer(textureCoordinate, GL_FLOAT, VertexData::TEXTURE_COORDINATES_OFFSET, 3, sizeof(VertexData));
+
+	// Tell OpenGL programmable pipeline how to locate normals
+	int normalVector = mpProgram->attributeLocation("aNormal");
+	mpProgram->enableAttributeArray(normalVector);
+	mpProgram->setAttributeBuffer(normalVector, GL_FLOAT, VertexData::NORMALS_OFFSET, 3, sizeof(VertexData));
+
 	// Draw cube geometry using indices from VBO 1
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, totalVertexNumber);
+	glDrawElements(GL_TRIANGLE_STRIP, totalIndexNumber, GL_UNSIGNED_SHORT, 0);
 }
 
 void GeometryEngine::ColorMaterial::copy(const ColorMaterial & mat)

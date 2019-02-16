@@ -32,12 +32,6 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="Items\GraphicItems\Cameras\PerspectiveCamera.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Items\GraphicItems\Cameras\OrthographicCamera.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
     <ClInclude Include="Items\GraphicItems\Light.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
@@ -65,6 +59,24 @@
     <ClInclude Include="Render Utils\GBuffer.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="Items\GraphicItems\Cameras\DeferredShadingCamera.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\GraphicItems\Cameras\DeferredShading\OrthographicCamera.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\GraphicItems\Cameras\DeferredShading\PerspectiveCamera.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Geometries\Sphere.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\GraphicItems\DeferredShadingLight.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items\Geometries\Quad.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeometryEngine.cpp">
@@ -84,12 +96,6 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Items\GraphicItems\Cameras\OrthographicCamera.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Items\GraphicItems\Cameras\PerspectiveCamera.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="Items\GraphicItems\Light.cpp">
@@ -117,6 +123,24 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="Render Utils\GBuffer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\GraphicItems\Cameras\DeferredShadingCamera.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\GraphicItems\Cameras\DeferredShading\OrthographicCamera.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\GraphicItems\Cameras\DeferredShading\PerspectiveCamera.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Geometries\Sphere.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\GraphicItems\DeferredShadingLight.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Items\Geometries\Quad.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>

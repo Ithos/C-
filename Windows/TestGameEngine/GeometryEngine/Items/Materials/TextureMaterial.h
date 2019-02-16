@@ -87,6 +87,8 @@ namespace GeometryEngine
 		virtual void DeleteAllTextures();
 		
 	protected:
+		static const int TEXTURE_UNIT = 0;
+
 		std::list<TextureParameters *> mTexturesList;
 
 		TexturesFiles::Textures * mpTexDirManager;
@@ -96,8 +98,8 @@ namespace GeometryEngine
 		virtual void initShaders() override;
 		virtual TextureParameters* buildTexture(const TextureParameters& texDir);
 
-		virtual void setProgramParameters(const QMatrix4x4& projectionView, const GeometryItem& parent) override;
-		virtual void drawMaterial(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, unsigned int totalVertexNumber) override;
+		virtual void setProgramParameters(const QMatrix4x4& projection, const QMatrix4x4& view, const GeometryItem& parent) override;
+		virtual void drawMaterial(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, unsigned int totalVertexNumber, unsigned int totalIndexNumber) override;
 		virtual void copy(const TextureMaterial& mat);
 	};
 }

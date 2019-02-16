@@ -9,7 +9,7 @@
 #include <ConfigurationManager.h>
 #include <ShaderManager.h>
 
-#include "../WorldItem.h";
+#include "../WorldItem.h"
 
 namespace GeometryEngine
 {
@@ -37,6 +37,18 @@ namespace GeometryEngine
 		QMatrix3x3 GetNormalMatrix() const { return (ViewMatrix * ModelMatrix).normalMatrix(); }
 	};
 
+	struct GBufferTextureInfo
+	{
+		unsigned int DiffuseTexture;
+		unsigned int PositionTexture;
+		unsigned int NormalTexture;
+		unsigned int TexcoordTexture;
+		const QVector2D& TextureSize;
+
+		GBufferTextureInfo(unsigned int diffColorTexture, unsigned int posTexture, unsigned int normalTexture, unsigned int texcoordTexture, const QVector2D& texSize):
+			DiffuseTexture(diffColorTexture), PositionTexture(posTexture), NormalTexture(normalTexture), TexcoordTexture(texcoordTexture), TextureSize(texSize) {}
+	};
+
 	struct LightShaderConstants
 	{
 		static const std::string AMBIENT_LIGHT_VERTEX_SHADER;
@@ -50,6 +62,13 @@ namespace GeometryEngine
 
 		static const std::string FLASHLIGHT_VERTEX_SHADER;
 		static const std::string FLASHLIGHT_FRAGMENT_SHADER;
+
+		static const std::string DEFERRED_SHADING_VERTEX_SHADER;
+
+		static const std::string AMBIENT_LIGHT_FRAGMENT_SHADER_DS;
+		static const std::string DIRECTIONAL_LIGHT_FRAGMENT_SHADER_DS;
+		static const std::string POINT_LIGHT_FRAGMENT_SHADER_DS;
+		static const std::string FLASHLIGHT_FRAGMENT_SHADER_DS;
 	};
 
 	class Light : public WorldItem
@@ -62,7 +81,12 @@ namespace GeometryEngine
 		virtual ~Light();
 
 		virtual void CalculateLighting(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, const LightingTransformationData& transformData, 
-			const MaterialLightingParameters& matParam, const QVector3D& viewPos, unsigned int totalVertexNum);
+			const MaterialLightingParameters& matParam, const GBufferTextureInfo& gBuffTexInfo, const QVector3D& viewPos, unsigned int totalVertexNum, unsigned int totalIndexNum);
+
+		virtual void LightFromBoundignGeometry(const QMatrix4x4& projectionMatrix, const QMatrix4x4& viewMatrix, const GBufferTextureInfo& gBuffTexInfo, const QVector3D& viewPos)
+		{ assert(GetBoundingGeometry() != nullptr && "Bounding geometry not found"); } 
+
+		virtual WorldItem* const GetBoundingGeometry() { return nullptr; }
 	protected:
 		QVector3D mColorDiffuse; // Vec3 color  + float intensity
 		QVector3D mColorAmbient;
@@ -76,8 +100,8 @@ namespace GeometryEngine
 		virtual void initLight();
 		virtual void initLightProgram();
 		virtual void initLightShaders() = 0;
-		virtual void setProgramParameters(const LightingTransformationData& transformData, const MaterialLightingParameters& matParam, const QVector3D& viewPos) = 0;
-		virtual void calculateContribution(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, unsigned int totalVertexNum) = 0;
+		virtual void setProgramParameters(const LightingTransformationData& transformData, const MaterialLightingParameters& matParam, const GBufferTextureInfo& GBuffTexInfo, const QVector3D& viewPos) = 0;
+		virtual void calculateContribution(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, unsigned int totalVertexNum, unsigned int totalIndexNum) = 0;
 	};
 }
 

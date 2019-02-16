@@ -23,6 +23,7 @@ namespace GeometryEngine {
 	class Cube;
 	class PerspectiveCamera;
 	class Light;
+	class Sphere;
 }
 
 namespace Application
@@ -55,7 +56,7 @@ namespace Application
 
 		/// Items shouldnt be created here its just for testing purposes
 		GeometryEngine::Cube* testCube;
-		GeometryEngine::Cube* testCube2;
+		GeometryEngine::Sphere* testCube2;
 		GeometryEngine::PerspectiveCamera* cam;
 		GeometryEngine::Light* mainLight;
 

@@ -2,11 +2,13 @@
 
 /// TODO remove
 #include <Items/Geometries/Cube.h>
+#include <Items/Geometries/Sphere.h>
+#include <Items/Geometries/Quad.h>
 #include <Items/GeometryItem.h>
 #include <Items/WorldItem.h>
 #include <Items/GraphicItems/Camera.h>
-#include <Items/GraphicItems/Cameras/PerspectiveCamera.h>
-#include <Items/GraphicItems/Cameras/OrthographicCamera.h>
+#include <Items/GraphicItems/Cameras/DeferredShading/OrthographicCamera.h>
+#include <Items/GraphicItems/Cameras/DeferredShading/PerspectiveCamera.h>
 #include <Items/Materials/ColorMaterial.h>
 #include <Items/Materials/TextureMaterial.h>
 #include <Textures.h>
@@ -114,11 +116,14 @@ namespace Application
 
 		GeometryEngine::TextureMaterial tMat(tmpList);
 		/*GeometryEngine::Cube**/ testCube = new GeometryEngine::Cube( tMat, 4.0f,QVector3D(-5.0f, 0.0f, -15.0f), QVector3D(30.0f, -30.0f, 0.0f));
-		/*GeometryEngine::Cube**/ testCube2 = new GeometryEngine::Cube(mat, 2.0f, QVector3D(5.0f, 0.0f, -15.0f), QVector3D(-30.0f, 30.0f, 0.0f));
-		/*GeometryEngine::PerspectiveCamera**/ cam = new GeometryEngine::PerspectiveCamera(QVector4D(0, 0, this->width(), this->height()), 45.0f, 1.0f, true, 0.1f, 30.0f, 
-																			QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f, 0.0f, 0.0f));
+		/*GeometryEngine::Cube**/ testCube2 = new GeometryEngine::Sphere(mat, 1.0f, 6, 12, QVector3D(5.0f, 0.0f, -15.0f));//new GeometryEngine::Cube(mat, 2.0f, QVector3D(5.0f, 0.0f, -15.0f), QVector3D(-30.0f, 30.0f, 0.0f));
+		/*GeometryEngine::PerspectiveCamera**/ cam = new GeometryEngine::PerspectiveCamera( QVector4D(0, 0, this->width(), this->height()), 45.0f, 1.0f, true, 0.1f, 30.0f, 
+																			QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f, 0.0f, 0.0f) );
 
-		mainLight = new GeometryEngine::DirectionalLight(/*45.0f, QVector3D(0.5f, 0.3f, 0.1f), */QVector3D(0.0, -1.0, 0.0), QVector3D(0.7f, 0.7f, 0.7f),
+		GeometryEngine::Sphere lightSphere(mat);
+		//GeometryEngine::Quad lightQuad(mat, 3.0f, 3.0f);
+
+		mainLight = new GeometryEngine::Spotlight(45.0f, QVector3D(0.5f, 0.3f, 0.1f), QVector3D(0.0, -1.0, 0.0), &lightSphere, QVector3D(0.7f, 0.7f, 0.7f),
 			QVector3D(0.4f, 0.4f, 0.4f), QVector3D(1.0f, 1.0f, 1.0f), QVector3D(0.0f, 5.0f, -15.0f));
 
 		GeometryEngine::Cube* lightCube = new GeometryEngine::Cube(mat, 0.2f, QVector3D(0.0f, 5.0f, -15.0f), QVector3D(0.1f, 0.1f, 0.1f), QVector3D(1.0f, 1.0f, 1.0f));

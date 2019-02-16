@@ -31,6 +31,8 @@ namespace GeometryEngine
 		WorldItem(const QVector3D& pos = QVector3D(0.0f, 0.0f, 0.0f), const QVector3D & rot = QVector3D(0.0f, 0.0f, 0.0f), 
 			const QVector3D & scale = QVector3D(1.0f, 1.0f, 1.0f), WorldItem* parent = nullptr);
 
+		WorldItem(const WorldItem& ref);
+
 		virtual ~WorldItem();
 
 		bool AddChild(WorldItem* child);
@@ -39,7 +41,7 @@ namespace GeometryEngine
 		bool RemoveParent();
 		bool FindChild(WorldItem* child) const;
 		WorldItem* GetParent() const { return mpParent; }
-		const QVector3D& GetPosition() const;
+		QVector3D GetPosition() const;
 		const QQuaternion& GetRotation() const { return mRotation; }
 		const QVector3D& GetScale() const { return mScale; }
 		void Move(const QVector3D& vector, bool updateChildren = true);
@@ -52,10 +54,11 @@ namespace GeometryEngine
 		void SetScale(const QVector3D& scale, bool delayUpdate = false);
 		virtual void CalculateModelMatrix(bool calculateChildren = false);
 		virtual void UpdateModelMatrix(bool updateChildren = false);
-		virtual void Update(const QMatrix4x4& projectionViewMatrix) {};
+		virtual void Update(const QMatrix4x4& projection, const QMatrix4x4& view) {};
 		virtual QVector3D ToModelCoordSystem(const QVector3D& vector);
 		virtual QVector3D ToGlobalCoordSystem(const QVector3D& vector );
 		virtual const QMatrix4x4& GetModelMatrix() const { return mModelMatrix; }
+		virtual void Copy(const WorldItem& ref);
 
 	protected:
 

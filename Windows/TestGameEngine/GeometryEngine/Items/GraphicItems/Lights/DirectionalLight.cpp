@@ -1,8 +1,8 @@
 #include "DirectionalLight.h"
 
-GeometryEngine::DirectionalLight::DirectionalLight(const QVector3D & direction, const QVector3D & diffuse, const QVector3D & ambient,
+GeometryEngine::DirectionalLight::DirectionalLight(const QVector3D & direction, GeometryItem* boundingBox, const QVector3D & diffuse, const QVector3D & ambient,
 	const QVector3D & specular, const QVector3D & pos, const QVector3D & rot, const QVector3D & scale, WorldItem * parent) :
-	Light(diffuse, ambient, specular, pos, rot, scale, parent), mDirection(direction)
+	DeferredShadingLight(boundingBox, diffuse, ambient, specular, pos, rot, scale, parent), mDirection(direction)
 {
 	initLight();
 }
@@ -13,36 +13,43 @@ GeometryEngine::DirectionalLight::~DirectionalLight()
 
 void GeometryEngine::DirectionalLight::initLightShaders()
 {
-	mVertexShaderKey = LightShaderConstants::DIRECTIONAL_LIGHT_VERTEX_SHADER;
-	mFragmentShaderKey = LightShaderConstants::DIRECTIONAL_LIGHT_FRAGMENT_SHADER; 
+	mVertexShaderKey = LightShaderConstants::DEFERRED_SHADING_VERTEX_SHADER;
+	mFragmentShaderKey = LightShaderConstants::DIRECTIONAL_LIGHT_FRAGMENT_SHADER_DS; 
 }
 
-void GeometryEngine::DirectionalLight::setProgramParameters(const LightingTransformationData & transformData, const MaterialLightingParameters & matParam, const QVector3D & viewPos)
+void GeometryEngine::DirectionalLight::setProgramParameters(const LightingTransformationData & transformData, const MaterialLightingParameters & matParam,
+	const GBufferTextureInfo& gBuffTexInfo, const QVector3D & viewPos)
 {
-	if (mpProgram != nullptr)
+	assert( mpProgram != nullptr && "Shading program not found");
 	{
 		// Set matrices
-		mpProgram->setUniformValue("modelViewProjectionMatrix", transformData.ProjectionMatrix * transformData.ViewMatrix * transformData.ModelMatrix);
-		mpProgram->setUniformValue("modelViewMatrix", transformData.ViewMatrix * transformData.ModelMatrix);
-		mpProgram->setUniformValue("normalMatrix", transformData.GetNormalMatrix());
+		mpProgram->setUniformValue("modelViewProjectionMatrix", /*transformData.ProjectionMatrix * transformData.ViewMatrix */ transformData.ModelMatrix);
+		//mpProgram->setUniformValue("modelViewMatrix", transformData.ViewMatrix * transformData.ModelMatrix);
+		//mpProgram->setUniformValue("modelMatrix", transformData.ModelMatrix);
 
 		//Set material properties
-		mpProgram->setUniformValue("material.ambient", matParam.Ambient);
-		mpProgram->setUniformValue("material.diffuse", matParam.Diffuse);
-		mpProgram->setUniformValue("material.specular", matParam.Specular);
-		mpProgram->setUniformValue("material.shininess", matParam.Shininess);
+		//mpProgram->setUniformValue("mMaterial.ambient", matParam.Ambient);
+		//mpProgram->setUniformValue("mMaterial.diffuse", matParam.Diffuse);
+		//mpProgram->setUniformValue("mMaterial.specular", matParam.Specular);
+		//mpProgram->setUniformValue("mMaterial.shininess", matParam.Shininess);
+
+		mpProgram->setUniformValue("mPositionMap", gBuffTexInfo.PositionTexture);
+		mpProgram->setUniformValue("mColorMap", gBuffTexInfo.DiffuseTexture);
+		mpProgram->setUniformValue("mNormalMap", gBuffTexInfo.NormalTexture);
+
+		mpProgram->setUniformValue("mTextureSize", gBuffTexInfo.TextureSize);
 
 		//Set light properties
-		mpProgram->setUniformValue("light.ambient", this->mColorAmbient);
-		mpProgram->setUniformValue("light.diffuse", this->mColorDiffuse);
-		mpProgram->setUniformValue("light.specular", this->mColorSpecular);
-		mpProgram->setUniformValue("light.direction", this->GetRotation() * this->mDirection);
+		mpProgram->setUniformValue("mLight.ambient", this->mColorAmbient);
+		mpProgram->setUniformValue("mLight.diffuse", this->mColorDiffuse);
+		mpProgram->setUniformValue("mLight.specular", this->mColorSpecular);
+		mpProgram->setUniformValue("mLight.direction", this->GetRotation() * this->mDirection);
 
-		mpProgram->setUniformValue("viewPos", viewPos);
+		mpProgram->setUniformValue("mViewPos", viewPos);
 	}
 }
 
-void GeometryEngine::DirectionalLight::calculateContribution(QOpenGLBuffer * arrayBuf, QOpenGLBuffer * indexBuf, unsigned int totalVertexNum)
+void GeometryEngine::DirectionalLight::calculateContribution(QOpenGLBuffer * arrayBuf, QOpenGLBuffer * indexBuf, unsigned int totalVertexNum, unsigned int totalIndexNum)
 {
 	// Tell OpenGL which VBOs to use
 	arrayBuf->bind();
@@ -53,11 +60,16 @@ void GeometryEngine::DirectionalLight::calculateContribution(QOpenGLBuffer * arr
 	mpProgram->enableAttributeArray(vertexLocation);
 	mpProgram->setAttributeBuffer(vertexLocation, GL_FLOAT, VertexData::POSITION_OFFSET, 3, sizeof(VertexData));
 
-	// Tell OpenGL programmable pipeline how to locate vertex position data
-	int normalVector = mpProgram->attributeLocation("aNormal");
-	mpProgram->enableAttributeArray(normalVector);
-	mpProgram->setAttributeBuffer(normalVector, GL_FLOAT, VertexData::NORMALS_OFFSET, 3, sizeof(VertexData));
+	// Tell OpenGL programmable pipeline how to locate texture coordinates
+	/*int textureCoordinate = mpProgram->attributeLocation("TexCoord");
+	mpProgram->enableAttributeArray(textureCoordinate);
+	mpProgram->setAttributeBuffer(textureCoordinate, GL_FLOAT, VertexData::TEXTURE_COORDINATES_OFFSET, 3, sizeof(VertexData));*/
 
-	// Draw cube geometry using indices from VBO 1
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, totalVertexNum);
+	// Tell OpenGL programmable pipeline how to locate vertex position data
+	/*int normalVector = mpProgram->attributeLocation("aNormal");
+	mpProgram->enableAttributeArray(normalVector);
+	mpProgram->setAttributeBuffer(normalVector, GL_FLOAT, VertexData::NORMALS_OFFSET, 3, sizeof(VertexData));*/
+
+	// Draw light
+	glDrawElements(GL_TRIANGLE_STRIP, totalIndexNum, GL_UNSIGNED_SHORT, 0);
 }

@@ -99,13 +99,17 @@
   <ItemGroup>
     <ClInclude Include="Items\Geometries\Cube.h" />
     <ClInclude Include="GeometryEngine.h" />
+    <ClInclude Include="Items\Geometries\Quad.h" />
+    <ClInclude Include="Items\Geometries\Sphere.h" />
     <ClInclude Include="Items\GeometryItem.h" />
     <ClInclude Include="GeometryScene.h" />
     <ClInclude Include="Items\GraphicItems\Camera.h" />
-    <ClInclude Include="Items\GraphicItems\Cameras\OrthographicCamera.h" />
-    <ClInclude Include="Items\GraphicItems\Cameras\PerspectiveCamera.h" />
+    <ClInclude Include="Items\GraphicItems\Cameras\DeferredShadingCamera.h" />
+    <ClInclude Include="Items\GraphicItems\Cameras\DeferredShading\OrthographicCamera.h" />
+    <ClInclude Include="Items\GraphicItems\Cameras\DeferredShading\PerspectiveCamera.h" />
     <ClInclude Include="Items\GraphicItems\Light.h" />
     <ClInclude Include="Items\GraphicItems\Lights\AmbientLight.h" />
+    <ClInclude Include="Items\GraphicItems\DeferredShadingLight.h" />
     <ClInclude Include="Items\GraphicItems\Lights\DirectionalLight.h" />
     <ClInclude Include="Items\GraphicItems\Lights\PointLight.h" />
     <ClInclude Include="Items\GraphicItems\Lights\Spotlight.h" />
@@ -119,11 +123,15 @@
   <ItemGroup>
     <ClCompile Include="Items\Geometries\Cube.cpp" />
     <ClCompile Include="GeometryEngine.cpp" />
+    <ClCompile Include="Items\Geometries\Quad.cpp" />
+    <ClCompile Include="Items\Geometries\Sphere.cpp" />
     <ClCompile Include="Items\GeometryItem.cpp" />
     <ClCompile Include="GeometryScene.cpp" />
     <ClCompile Include="Items\GraphicItems\Camera.cpp" />
-    <ClCompile Include="Items\GraphicItems\Cameras\OrthographicCamera.cpp" />
-    <ClCompile Include="Items\GraphicItems\Cameras\PerspectiveCamera.cpp" />
+    <ClCompile Include="Items\GraphicItems\Cameras\DeferredShadingCamera.cpp" />
+    <ClCompile Include="Items\GraphicItems\Cameras\DeferredShading\OrthographicCamera.cpp" />
+    <ClCompile Include="Items\GraphicItems\Cameras\DeferredShading\PerspectiveCamera.cpp" />
+    <ClCompile Include="Items\GraphicItems\DeferredShadingLight.cpp" />
     <ClCompile Include="Items\GraphicItems\Light.cpp" />
     <ClCompile Include="Items\GraphicItems\Lights\AmbientLight.cpp" />
     <ClCompile Include="Items\GraphicItems\Lights\DirectionalLight.cpp" />

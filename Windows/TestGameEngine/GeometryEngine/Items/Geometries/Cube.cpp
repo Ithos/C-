@@ -6,9 +6,25 @@ GeometryEngine::Cube::Cube( const Material& mat, float size, const QVector3D& po
 	initItem();
 }
 
+GeometryEngine::Cube::Cube(const Cube & ref) : GeometryItem( (const GeometryItem&)ref )
+{
+	this->Copy(ref);
+}
+
 GeometryEngine::Cube::~Cube()
 {
-	GeometryItem::~GeometryItem();
+}
+
+void GeometryEngine::Cube::Copy(const Cube & ref)
+{
+	this->GeometryItem::Copy(ref);
+	this->mSize = ref.mSize;
+	initItem();
+}
+
+GeometryEngine::GeometryItem * GeometryEngine::Cube::Clone() const
+{
+	return new Cube((*this));
 }
 
 void GeometryEngine::Cube::initGeometry()
@@ -81,5 +97,6 @@ void GeometryEngine::Cube::initGeometry()
 	mpIndexBuf->allocate(indices, 34 * sizeof(GLushort));
 
 	mTotalVertexNumber = 24;
+	mTotalIndexNumber = 34;
 }
 

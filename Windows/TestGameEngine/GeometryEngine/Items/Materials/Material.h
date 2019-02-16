@@ -73,7 +73,7 @@ namespace GeometryEngine
 
 		
 		virtual void CustomLighting(std::list<CustomLightParameters* > lights) {}
-		virtual void Draw(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, unsigned int totalVertexNumber, const QMatrix4x4& projectionView, const GeometryItem& parent);
+		virtual void Draw(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, unsigned int totalVertexNumber, unsigned int totalIndexNumber, const QMatrix4x4& projection, const QMatrix4x4& view, const GeometryItem& parent);
 		virtual Material* Clone() const = 0;
 		
 
@@ -99,8 +99,8 @@ namespace GeometryEngine
 		virtual void initProgram();
 		virtual void copy(const Material& mat);
 
-		virtual void setProgramParameters(const QMatrix4x4& projection, const GeometryItem& parent) = 0;
-		virtual void drawMaterial(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, unsigned int totalVertexNumber) = 0;
+		virtual void setProgramParameters(const QMatrix4x4& projection, const QMatrix4x4& view, const GeometryItem& parent) = 0;
+		virtual void drawMaterial(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, unsigned int totalVertexNumber, unsigned int totalIndexNumber) = 0;
 	};
 }
 

@@ -1,7 +1,7 @@
 #include "AmbientLight.h"
 
-GeometryEngine::AmbientLight::AmbientLight(const QVector3D & diffuse, const QVector3D & ambient, const QVector3D & specular,
-	const QVector3D & pos, const QVector3D & rot, const QVector3D & scale, WorldItem * parent) : Light(diffuse, ambient, specular, pos, rot, scale, parent)
+GeometryEngine::AmbientLight::AmbientLight(GeometryItem* boundingBox, const QVector3D & diffuse, const QVector3D & ambient, const QVector3D & specular,
+	const QVector3D & pos, const QVector3D & rot, const QVector3D & scale, WorldItem * parent) : DeferredShadingLight(boundingBox, diffuse, ambient, specular, pos, rot, scale, parent)
 {
 	initLight();
 }
@@ -12,36 +12,35 @@ GeometryEngine::AmbientLight::~AmbientLight()
 
 void GeometryEngine::AmbientLight::initLightShaders()
 {
-	mVertexShaderKey = LightShaderConstants::AMBIENT_LIGHT_VERTEX_SHADER;
-	mFragmentShaderKey = LightShaderConstants::AMBIENT_LIGHT_FRAGMENT_SHADER;
+	mVertexShaderKey = LightShaderConstants::DEFERRED_SHADING_VERTEX_SHADER;
+	mFragmentShaderKey = LightShaderConstants::AMBIENT_LIGHT_FRAGMENT_SHADER_DS;
 }
 
-void GeometryEngine::AmbientLight::setProgramParameters(const LightingTransformationData& transformData, const MaterialLightingParameters& matParam, const QVector3D& viewPos)
+void GeometryEngine::AmbientLight::setProgramParameters(const LightingTransformationData & transformData, const MaterialLightingParameters & matParam,
+	const GBufferTextureInfo& gBuffTexInfo, const QVector3D & viewPos)
 {
-	if (mpProgram != nullptr)
+	assert(mpProgram != nullptr && "Shading program not found");
 	{
 		// Set matrices
-		mpProgram->setUniformValue("modelViewProjectionMatrix", transformData.ProjectionMatrix * transformData.ViewMatrix * transformData.ModelMatrix);
-		mpProgram->setUniformValue("modelViewMatrix", transformData.ViewMatrix * transformData.ModelMatrix);
-		mpProgram->setUniformValue("normalMatrix", transformData.GetNormalMatrix() );
+		mpProgram->setUniformValue("modelViewProjectionMatrix", transformData.ModelMatrix);
 
-		//Set material properties
-		mpProgram->setUniformValue("material.ambient", matParam.Ambient);
-		mpProgram->setUniformValue("material.diffuse", matParam.Diffuse);
-		mpProgram->setUniformValue("material.specular", matParam.Specular);
-		mpProgram->setUniformValue("material.shininess", matParam.Shininess);
+		mpProgram->setUniformValue("mPositionMap", gBuffTexInfo.PositionTexture);
+		mpProgram->setUniformValue("mColorMap", gBuffTexInfo.DiffuseTexture);
+		mpProgram->setUniformValue("mNormalMap", gBuffTexInfo.NormalTexture);
+
+		mpProgram->setUniformValue("mTextureSize", gBuffTexInfo.TextureSize);
 
 		//Set light properties
-		mpProgram->setUniformValue("light.ambient", this->mColorAmbient);
-		mpProgram->setUniformValue("light.diffuse", this->mColorDiffuse);
-		mpProgram->setUniformValue("light.specular", this->mColorSpecular);
-		mpProgram->setUniformValue("light.position", this->mPosition);
+		mpProgram->setUniformValue("mLight.ambient", this->mColorAmbient);
+		mpProgram->setUniformValue("mLight.diffuse", this->mColorDiffuse);
+		mpProgram->setUniformValue("mLight.specular", this->mColorSpecular);
+		mpProgram->setUniformValue("mLight.position", this->mPosition);
 
-		mpProgram->setUniformValue("viewPos", viewPos);
+		mpProgram->setUniformValue("mViewPos", viewPos);
 	}
 }
 
-void GeometryEngine::AmbientLight::calculateContribution(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, unsigned int totalVertexNum)
+void GeometryEngine::AmbientLight::calculateContribution(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, unsigned int totalVertexNum, unsigned int totalIndexNum)
 {
 	// Tell OpenGL which VBOs to use
 	arrayBuf->bind();
@@ -52,11 +51,6 @@ void GeometryEngine::AmbientLight::calculateContribution(QOpenGLBuffer* arrayBuf
 	mpProgram->enableAttributeArray(vertexLocation);
 	mpProgram->setAttributeBuffer(vertexLocation, GL_FLOAT, VertexData::POSITION_OFFSET, 3, sizeof(VertexData));
 
-	// Tell OpenGL programmable pipeline how to locate vertex position data
-	int normalVector = mpProgram->attributeLocation("aNormal");
-	mpProgram->enableAttributeArray(normalVector);
-	mpProgram->setAttributeBuffer(normalVector, GL_FLOAT, VertexData::NORMALS_OFFSET, 3, sizeof(VertexData));
-
 	// Draw cube geometry using indices from VBO 1
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, totalVertexNum);
+	glDrawElements(GL_TRIANGLE_STRIP, totalIndexNum, GL_UNSIGNED_SHORT, 0);
 }

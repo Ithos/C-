@@ -24,8 +24,8 @@ namespace GeometryEngine
 
 		virtual void initShaders();
 
-		virtual void setProgramParameters(const QMatrix4x4& projectionView, const GeometryItem& parent) override;
-		virtual void drawMaterial(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, unsigned int totalVertexNumber) override;
+		virtual void setProgramParameters(const QMatrix4x4& projection, const QMatrix4x4& view, const GeometryItem& parent) override;
+		virtual void drawMaterial(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, unsigned int totalVertexNumber, unsigned int totalIndexNumber) override;
 		virtual void copy(const ColorMaterial& mat);
 	};
 }

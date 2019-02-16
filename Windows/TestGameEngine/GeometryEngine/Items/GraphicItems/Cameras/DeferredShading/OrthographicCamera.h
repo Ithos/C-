@@ -3,11 +3,11 @@
 #ifndef GEOMETRYORTHOGRAPHICCAMERA_H
 #define GEOMETRYORTHOGRAPHICCAMERA_H
 
-#include "../Camera.h"
+#include "..\DeferredShadingCamera.h"
 
 namespace GeometryEngine
 {
-	class OrthographicCamera : public Camera
+	class OrthographicCamera : public DeferredShadingCamera
 	{
 	public:
 		OrthographicCamera(const QVector4D& viewportSize, const QRect& orthoSize, bool autoResize = true, GLdouble zNear = 0.1, GLdouble zFar = 30.0,

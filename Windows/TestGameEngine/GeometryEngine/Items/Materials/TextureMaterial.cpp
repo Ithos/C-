@@ -79,31 +79,47 @@ void GeometryEngine::TextureMaterial::DeleteAllTextures()
 	mTexturesList.clear();
 }
 
-void GeometryEngine::TextureMaterial::setProgramParameters(const QMatrix4x4 & projectionView, const GeometryItem & parent)
+void GeometryEngine::TextureMaterial::setProgramParameters(const QMatrix4x4& projection, const QMatrix4x4& view, const GeometryItem & parent)
 {
 	if (mpProgram != nullptr)
 	{
-		mpProgram->setUniformValue("matrix", projectionView * parent.GetModelMatrix());
-		mpProgram->setUniformValue("texture", 0);
+		// Set matrices
+		mpProgram->setUniformValue("modelViewProjectionMatrix", projection * view * parent.GetModelMatrix());
+		mpProgram->setUniformValue("modelViewMatrix", view * parent.GetModelMatrix());
+		mpProgram->setUniformValue("modelMatrix", parent.GetModelMatrix());
+
+		mpProgram->setUniformValue("texture", TEXTURE_UNIT );
 	}
 }
 
-void GeometryEngine::TextureMaterial::drawMaterial(QOpenGLBuffer * arrayBuf, QOpenGLBuffer * indexBuf, unsigned int totalVertexNumber)
+void GeometryEngine::TextureMaterial::drawMaterial(QOpenGLBuffer * arrayBuf, QOpenGLBuffer * indexBuf, unsigned int totalVertexNumber, unsigned int totalIndexNumber)
 {
 	// Tell OpenGL which VBOs to use
 	arrayBuf->bind();
 	indexBuf->bind();
 
 	// Tell OpenGL programmable pipeline how to locate vertex position data
-	int vertexLocation = mpProgram->attributeLocation("vertex");
+	int vertexLocation = mpProgram->attributeLocation("posAttr");
 	mpProgram->enableAttributeArray(vertexLocation);
 	mpProgram->setAttributeBuffer(vertexLocation, GL_FLOAT, VertexData::POSITION_OFFSET, 3, sizeof(VertexData));
 
-	int texCoordLocation = mpProgram->attributeLocation("texCoord");
-	mpProgram->enableAttributeArray(texCoordLocation);
-	mpProgram->setAttributeBuffer(texCoordLocation, GL_FLOAT, VertexData::TEXTURE_COORDINATES_OFFSET, 2, sizeof(VertexData));
+	// Tell OpenGL programmable pipeline how to locate texture coordinates
+	int textureCoordinate = mpProgram->attributeLocation("TexCoord");
+	mpProgram->enableAttributeArray(textureCoordinate);
+	mpProgram->setAttributeBuffer(textureCoordinate, GL_FLOAT, VertexData::TEXTURE_COORDINATES_OFFSET, 2, sizeof(VertexData));
+
+	// Tell OpenGL programmable pipeline how to locate normals
+	int normalVector = mpProgram->attributeLocation("aNormal");
+	mpProgram->enableAttributeArray(normalVector);
+	mpProgram->setAttributeBuffer(normalVector, GL_FLOAT, VertexData::NORMALS_OFFSET, 3, sizeof(VertexData));
 
 	int vertexCount = 0;
+
+	if (mTexturesList.size() == 1)
+	{
+		glDrawElements(GL_TRIANGLE_STRIP, totalIndexNumber, GL_UNSIGNED_SHORT, 0);
+		return;
+	}
 
 	for (int i = 0; i < mTexturesList.size(); ++i)
 	{
@@ -111,10 +127,11 @@ void GeometryEngine::TextureMaterial::drawMaterial(QOpenGLBuffer * arrayBuf, QOp
 		std::advance(it, i);
 
 		if ((*it)->Texture != nullptr)
-			(*it)->Texture->bind();
+			(*it)->Texture->bind(TEXTURE_UNIT);
 
 		int vertexNum = (*it)->VertexNumber > 0 ? (*it)->VertexNumber : totalVertexNumber;
 
+		/// Maybe do the same, but with indices?
 		glDrawArrays(GL_TRIANGLE_STRIP, vertexCount, vertexNum); /// Draw sets of 3 vertex you can also go for sets of 4 by swapping 3s for 4s in the call to the method
 
 		vertexCount += (*it)->VertexNumber;

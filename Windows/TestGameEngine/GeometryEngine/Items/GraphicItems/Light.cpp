@@ -12,6 +12,13 @@ const std::string GeometryEngine::LightShaderConstants::POINT_LIGHT_FRAGMENT_SHA
 const std::string GeometryEngine::LightShaderConstants::FLASHLIGHT_VERTEX_SHADER = "FLASHLIGHT_VERTEX_SHADER";
 const std::string GeometryEngine::LightShaderConstants::FLASHLIGHT_FRAGMENT_SHADER = "FLASHLIGHT_FRAGMENT_SHADER";
 
+const std::string GeometryEngine::LightShaderConstants::DEFERRED_SHADING_VERTEX_SHADER = "DEFERRED_SHADING_VERTEX_SHADER";
+
+const std::string GeometryEngine::LightShaderConstants::AMBIENT_LIGHT_FRAGMENT_SHADER_DS = "AMBIENT_LIGHT_FRAGMENT_SHADER_DS";
+const std::string GeometryEngine::LightShaderConstants::DIRECTIONAL_LIGHT_FRAGMENT_SHADER_DS = "DIRECTIONAL_LIGHT_FRAGMENT_SHADER_DS";
+const std::string GeometryEngine::LightShaderConstants::POINT_LIGHT_FRAGMENT_SHADER_DS = "POINT_LIGHT_FRAGMENT_SHADER_DS";
+const std::string GeometryEngine::LightShaderConstants::FLASHLIGHT_FRAGMENT_SHADER_DS = "FLASHLIGHT_FRAGMENT_SHADER_DS";
+
 GeometryEngine::Light::Light(const QVector3D & diffuse, const QVector3D & ambient, const QVector3D & specular, const QVector3D & pos, 
 	const QVector3D & rot, const QVector3D & scale, WorldItem * parent) : WorldItem(pos, rot, scale, parent), mColorDiffuse(diffuse), 
 	mColorAmbient(ambient), mColorSpecular(specular), mpProgram(nullptr), mVertexShaderKey(""), mFragmentShaderKey("")
@@ -28,7 +35,7 @@ GeometryEngine::Light::~Light()
 }
 
 void GeometryEngine::Light::CalculateLighting(QOpenGLBuffer* arrayBuf, QOpenGLBuffer* indexBuf, const LightingTransformationData& transformData,
-	const MaterialLightingParameters& matParam, const QVector3D& viewPos, unsigned int totalVertexNum)
+	const MaterialLightingParameters& matParam, const GBufferTextureInfo& gBuffTexInfo, const QVector3D& viewPos, unsigned int totalVertexNum, unsigned int totalIndexNum)
 {
 	if (mpProgram != nullptr)
 	{
@@ -46,9 +53,9 @@ void GeometryEngine::Light::CalculateLighting(QOpenGLBuffer* arrayBuf, QOpenGLBu
 			return;
 		}
 
-		setProgramParameters(transformData, matParam, viewPos);
+		setProgramParameters(transformData, matParam, gBuffTexInfo, viewPos);
 
-		calculateContribution(arrayBuf, indexBuf, totalVertexNum);
+		calculateContribution(arrayBuf, indexBuf, totalVertexNum, totalIndexNum);
 	}
 }
 

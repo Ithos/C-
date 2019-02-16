@@ -5,6 +5,11 @@ GeometryEngine::WorldItem::WorldItem(const QVector3D& pos, const QVector3D & rot
 	init(pos, rot, scale, parent);
 }
 
+GeometryEngine::WorldItem::WorldItem(const WorldItem & ref)
+{
+	Copy(ref);
+}
+
 
 GeometryEngine::WorldItem::~WorldItem()
 {
@@ -70,7 +75,7 @@ bool GeometryEngine::WorldItem::FindChild(WorldItem* child) const
 	return mpChildren.find(child) != mpChildren.end();
 }
 
-const QVector3D & GeometryEngine::WorldItem::GetPosition() const
+QVector3D GeometryEngine::WorldItem::GetPosition() const
 {
 	if (mpParent == nullptr)
 	{
@@ -206,8 +211,10 @@ void GeometryEngine::WorldItem::CalculateModelMatrix(bool calculateChildren)
 
 void GeometryEngine::WorldItem::UpdateModelMatrix(bool updateChildren)
 {
+	QVector3D tmp(GetPosition());
+
 	mModelMatrix.setToIdentity();
-	mModelMatrix.translate(GetPosition());
+	mModelMatrix.translate(tmp);
 	mModelMatrix.rotate(mRotation);
 	mModelMatrix.scale(mScale);
 
@@ -228,4 +235,10 @@ QVector3D GeometryEngine::WorldItem::ToModelCoordSystem(const QVector3D & vector
 QVector3D GeometryEngine::WorldItem::ToGlobalCoordSystem(const QVector3D & vector)
 {
 	return mRotation * vector;
+}
+
+void GeometryEngine::WorldItem::Copy(const WorldItem & ref)
+{
+	this->mpParent = ref.mpParent;
+	init(ref.mPosition, ref.mRotation.toEulerAngles(), ref.mScale, ref.mpParent);
 }
