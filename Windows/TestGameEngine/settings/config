@@ -1,6 +1,0 @@
-VERTEX_SHADER_FOLDER = ../settings/shaders/VertexShaders/
-FRAGMENT_SHADER_FOLDER = ../settings/shaders/FragmentShaders/
-CONFIG_VERTEX_SHADER = VertexShadersConf
-CONFIG_FRAGMENT_SHADER = FragmentShadersConf
-TEXTURES_FOLDER = ../settings/textures/
-CONFIG_TEXTURES = TexturesConf
